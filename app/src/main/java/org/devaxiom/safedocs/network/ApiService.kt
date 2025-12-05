@@ -9,8 +9,8 @@ import retrofit2.http.Query
 
 interface ApiService {
     @POST("/api/auth/google")
-    suspend fun loginWithGoogle(@Body request: GoogleLoginRequest): Response<LoginResponse>
+    suspend fun loginWithGoogle(@Body request: GoogleLoginRequest): Response<ApiResponse<LoginData>>
 
     @GET("/api/documents")
-    suspend fun getDocuments(@Query("type") type: String): Response<List<Document>>
+    suspend fun getDocuments(@Query("type") type: String): Response<ApiResponse<PaginatedResponse<Document>>>
 }

@@ -1,5 +1,6 @@
 package org.devaxiom.safedocs.ui.document
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,17 +14,26 @@ class DocumentViewModel : ViewModel() {
     private val _documents = MutableLiveData<List<Document>>()
     val documents: LiveData<List<Document>> = _documents
 
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
     fun fetchDocuments(type: String) {
         viewModelScope.launch {
             try {
                 val response = ApiClient.instance.getDocuments(type)
-                if (response.isSuccessful) {
-                    _documents.postValue(response.body())
+                if (response.isSuccessful && response.body()?.success == true) {
+                    // Extract the list of documents from the new paginated structure
+                    val documentList = response.body()?.data?.items ?: emptyList()
+                    _documents.postValue(documentList)
                 } else {
-                    // TODO: Handle error
+                    val errorMessage = response.body()?.message ?: "API Error: ${response.code()} ${response.message()}"
+                    Log.e("DocumentViewModel", errorMessage)
+                    _error.postValue(errorMessage)
                 }
             } catch (e: Exception) {
-                // TODO: Handle error
+                val errorMessage = "Network Exception: ${e.message}"
+                Log.e("DocumentViewModel", errorMessage, e)
+                _error.postValue(errorMessage)
             }
         }
     }

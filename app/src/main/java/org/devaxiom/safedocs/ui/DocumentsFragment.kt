@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,10 +33,21 @@ class DocumentsFragment : Fragment() {
 
         setupRecyclerView()
 
-        viewModel.documents.observe(viewLifecycleOwner) {
-            documentAdapter.submitList(it)
+        viewModel.documents.observe(viewLifecycleOwner) { documents ->
             binding.swipeRefresh.isRefreshing = false
-            binding.tvEmpty.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            if (documents != null) {
+                documentAdapter.submitList(documents)
+                binding.tvEmpty.visibility = if (documents.isEmpty()) View.VISIBLE else View.GONE
+            } else {
+                // Handle the case where the document list is null
+                documentAdapter.submitList(emptyList())
+                binding.tvEmpty.visibility = View.VISIBLE
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            binding.swipeRefresh.isRefreshing = false
+            Toast.makeText(context, "Error loading documents: $error", Toast.LENGTH_LONG).show()
         }
 
         binding.swipeRefresh.setOnRefreshListener {

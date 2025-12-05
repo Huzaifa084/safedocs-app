@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.devaxiom.safedocs.data.security.TokenManager
-import org.devaxiom.safedocs.network.GoogleLoginRequest
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -16,13 +15,14 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val response = authRepository.loginWithGoogle(idToken)
-                if (response.isSuccessful) {
-                    response.body()?.token?.let {
+                if (response.isSuccessful && response.body()?.success == true) {
+                    response.body()?.data?.accessToken?.let {
                         tokenManager.saveToken(it)
                         onSuccess()
-                    }
+                    } ?: onError("Access token was null in the response.")
                 } else {
-                    onError(response.message() ?: "Unknown error")
+                    val errorMessage = response.body()?.message ?: response.message() ?: "Unknown error"
+                    onError(errorMessage)
                 }
             } catch (e: Exception) {
                 onError(e.message ?: "Network error")
