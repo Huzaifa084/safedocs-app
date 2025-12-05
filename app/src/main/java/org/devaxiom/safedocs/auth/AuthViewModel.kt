@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.devaxiom.safedocs.data.security.TokenManager
+import org.devaxiom.safedocs.network.GoogleLoginRequest
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
