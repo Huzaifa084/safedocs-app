@@ -1,22 +1,30 @@
 package org.devaxiom.safedocs.auth
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import org.devaxiom.safedocs.data.security.TokenManager
 
-class AuthViewModel : ViewModel() {
-    private val repo = AuthRepository()
+class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
-    fun loginWithGoogle(idToken: String, onSuccess: (AuthResponse) -> Unit, onError: (Throwable) -> Unit) {
+    private val tokenManager = TokenManager(application)
+    private val authRepository = AuthRepository()
+
+    fun loginWithGoogle(idToken: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             try {
-                val resp = repo.loginWithGoogle(idToken)
-                onSuccess(resp)
-            } catch (ce: CancellationException) {
-                // ignore
-            } catch (t: Throwable) {
-                onError(t)
+                val response = authRepository.loginWithGoogle(idToken)
+                if (response.isSuccessful) {
+                    response.body()?.token?.let {
+                        tokenManager.saveToken(it)
+                        onSuccess()
+                    }
+                } else {
+                    onError(response.message() ?: "Unknown error")
+                }
+            } catch (e: Exception) {
+                onError(e.message ?: "Network error")
             }
         }
     }
