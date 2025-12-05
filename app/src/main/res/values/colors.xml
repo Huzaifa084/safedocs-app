@@ -1,10 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Primary Colors (Material 3) -->
+    <!-- Professional Blue Palette -->
+    <color name="primary_200">#FFD6E4FF</color>
+    <color name="primary_500">#FF3366FF</color>
+    <color name="primary_700">#FF254EDB</color>
+
+    <!-- Secondary Colors -->
+    <!-- Indigo Accent -->
+    <color name="secondary_200">#FFE0D9FF</color>
+    <color name="secondary_500">#FF7B61FF</color>
+    <color name="secondary_700">#FF5A3FE0</color>
+
+    <!-- Tertiary Colors -->
+    <color name="tertiary_200">#FFFFB8C7</color>
+    <color name="tertiary_500">#FFFF7B7B</color>
+    <color name="tertiary_700">#FFCC6363</color>
+
+    <!-- Surface Colors -->
+    <color name="surface">#FFFFFFFF</color>
+    <color name="surface_container">#FFF5F7FA</color>
+    <color name="surface_container_high">#FFEFF2F7</color>
+    <color name="surface_variant">#FFEFF2F7</color>
+
+    <!-- Background Colors -->
+    <color name="background">#FFFBF8FE</color>
+    <color name="surface_on">#FF1D1B1F</color>
+
+    <!-- Error/Status Colors -->
+    <color name="error">#FFFF5252</color>
+    <color name="error_light">#FFFF7D7D</color>
+    <color name="warning">#FFFFC107</color>
+    <color name="success">#FF4CAF50</color>
+    <color name="info">#FF2196F3</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#FF1A1F2B</color>
+    <color name="text_secondary">#FF5F6B7A</color>
+    <color name="text_tertiary">#FF79747E</color>
+    <color name="text_hint">#FFC4C7C5</color>
+    <color name="text_on_primary">#FFFFFFFF</color>
+    <color name="text_on_secondary">#FFFFFFFF</color>
+
+    <!-- Outline Colors -->
+    <color name="outline">#FF79747E</color>
+    <color name="outline_variant">#FFCAC4D0</color>
+
+    <!-- Neutrals -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Legacy (for backward compatibility) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 </resources>

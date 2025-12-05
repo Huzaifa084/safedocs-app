@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Design Tokens for SafeDocs App -->
+<!-- This file serves as a reference for all design system values -->
+<resources>
+    <!-- ========== COLOR TOKENS ========== -->
+    <!-- Primary: #3B5EDB | Secondary: #FF5E8B | Tertiary: #FF7B7B -->
+
+    <!-- ========== SPACING SCALE ========== -->
+    <!-- 4-8-12-16-24-32 -->
+
+    <!-- ========== CORNER RADII ========== -->
+    <!-- Buttons: 12dp | Cards: 12dp | FAB: 28dp -->
+
+    <!-- ========== TYPOGRAPHY ========== -->
+    <!-- Headline: 32sp bold | Title: 24sp bold | Body: 16sp | Label: 14sp -->
+
+    <!-- ========== ELEVATION ========== -->
+    <!-- Small: 2dp | Medium: 4dp | Large: 8dp | Extra: 16dp -->
+
+    <!-- ========== ICON SIZE ========== -->
+    <!-- Default: 24dp | Small: 16dp | Large: 32dp | XL: 48dp -->
+
+    <!-- ========== ADAPTIVE ICON ========== -->
+    <!-- Foreground: Vector layers | Background: Solid color (#3B5EDB) -->
+    <!-- Compose to 1024x1024px for export -->
+
+</resources>

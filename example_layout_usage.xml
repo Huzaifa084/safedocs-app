@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Example: Using SafeDocs Assets & Theming -->
+<!-- This demonstrates how to use icons, colors, dimensions, and styles -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- TOOLBAR EXAMPLE -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        style="@style/Widget.SafeDocs.Toolbar"
+        android:title="@string/app_name"
+        app:navigationIcon="@drawable/ic_lock"
+        app:menu="@menu/menu_bottom_nav" />
+
+    <!-- SPACER -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spacing_small"
+        android:background="@color/outline_variant" />
+
+    <!-- HEADLINE EXAMPLE -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextStyle.SafeDocs.Headline"
+        android:layout_margin="@dimen/spacing_large"
+        android:text="Recent Documents" />
+
+    <!-- CARD WITH CONTENT (Example 1) -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        style="@style/Widget.SafeDocs.CardView"
+        app:cardBackgroundColor="@color/surface_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_medium">
+
+            <!-- FILE ICON -->
+            <ImageView
+                android:layout_width="@dimen/icon_size_large"
+                android:layout_height="@dimen/icon_size_large"
+                android:layout_marginEnd="@dimen/spacing_medium"
+                android:src="@drawable/ic_file_pdf"
+                android:contentDescription="@string/label_info" />
+
+            <!-- TEXT CONTENT -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextStyle.SafeDocs.Title"
+                    android:text="Document Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextStyle.SafeDocs.Label"
+                    android:layout_marginTop="@dimen/spacing_extra_small"
+                    android:text="Updated 2 hours ago" />
+
+            </LinearLayout>
+
+            <!-- MORE OPTIONS BUTTON -->
+            <ImageButton
+                android:layout_width="@dimen/icon_size_medium"
+                android:layout_height="@dimen/icon_size_medium"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_more"
+                android:tint="@color/text_secondary"
+                android:contentDescription="@string/action_more" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- BUTTON ROW (Example Actions) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_large"
+        android:spacing="@dimen/spacing_small">
+
+        <!-- DOWNLOAD BUTTON -->
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/action_download"
+            app:icon="@drawable/ic_download" />
+
+        <!-- SHARE BUTTON -->
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:text="@string/action_share"
+            app:icon="@drawable/ic_share" />
+
+        <!-- DELETE BUTTON (Outline) -->
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:text="@string/action_delete"
+            app:icon="@drawable/ic_delete"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+    </LinearLayout>
+
+    <!-- SPACER (Flexible) -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- STATUS MESSAGE (Example) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_large"
+        android:gravity="center_vertical"
+        android:background="@color/success"
+        android:alpha="0.1">
+
+        <ImageView
+            android:layout_width="@dimen/icon_size_medium"
+            android:layout_height="@dimen/icon_size_medium"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:src="@drawable/ic_success"
+            android:tint="@color/success"
+            android:contentDescription="@string/label_success" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/TextStyle.SafeDocs.Body"
+            android:text="Document uploaded successfully!" />
+
+    </LinearLayout>
+
+    <!-- BOTTOM NAVIGATION -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        style="@style/Widget.SafeDocs.BottomNavigationView"
+        app:menu="@menu/menu_bottom_nav" />
+
+</LinearLayout>
+
+<!-- USAGE NOTES:
+
+1. COLORS:
+   - Use @color/primary_500 for primary actions
+   - Use @color/error for destructive actions
+   - Use @color/success for positive confirmations
+   - Use @color/outline for dividers/borders
+
+2. ICONS:
+   - All icons are 24dp by default
+   - Use android:tint to colorize
+   - Wrap in ImageButton for clickable icons
+   - Use app:icon for button icons
+
+3. DIMENSIONS:
+   - Use @dimen/spacing_medium for standard padding
+   - Use @dimen/corner_radius_medium for card radii
+   - Use @dimen/elevation_small for shadow depth
+
+4. STYLES:
+   - Apply TextStyle.SafeDocs.* for consistent typography
+   - Use Widget.SafeDocs.* for pre-styled components
+   - Inherit from Material3 base styles when needed
+
+5. STRINGS:
+   - All user-facing text should use @string resources
+   - Enables easy localization
+   - Maintains consistency across app
+
+6. DARK MODE:
+   - Colors auto-adapt when device is in dark mode
+   - values-night/colors.xml provides dark overrides
+   - No additional code needed - Material3 handles it
+
+-->

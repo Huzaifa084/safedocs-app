@@ -1,5 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Light Theme (Default) -->
+    <style name="Theme.SafeDocs" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Primary Brand Color -->
+        <item name="colorPrimary">@color/primary_500</item>
+        <item name="colorPrimaryVariant">@color/primary_700</item>
+        <item name="colorSecondary">@color/secondary_500</item>
+        <item name="colorSecondaryVariant">@color/secondary_700</item>
+        <item name="colorTertiary">@color/tertiary_500</item>
 
-    <style name="Theme.SafeDocs" parent="android:Theme.Material.Light.NoActionBar" />
+        <!-- Surface & Background -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:colorForeground">@color/text_primary</item>
+
+        <!-- Text Colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <!-- Material 3 Dynamic Colors (fallback for non-Material 3 devices) -->
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/white</item>
+
+        <!-- Status Bar Styling -->
+        <item name="android:statusBarColor">@color/surface</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Navigation Bar Styling -->
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- Window Background -->
+        <item name="android:windowBackground">@drawable/sf_splash_background</item>
+
+        <!-- Elevation / Shadow -->
+        <item name="elevation">@dimen/elevation_medium</item>
+    </style>
+
+    <!-- Dark Theme -->
+    <style name="Theme.SafeDocs.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Primary Brand Color -->
+        <item name="colorPrimary">@color/primary_200</item>
+        <item name="colorPrimaryVariant">@color/primary_500</item>
+        <item name="colorSecondary">@color/secondary_200</item>
+        <item name="colorSecondaryVariant">@color/secondary_500</item>
+        <item name="colorTertiary">@color/tertiary_200</item>
+
+        <!-- Surface & Background (Dark) -->
+        <item name="android:colorBackground">#FF121212</item>
+        <item name="android:colorForeground">@color/white</item>
+
+        <!-- Text Colors (Dark) -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <!-- Material 3 Dynamic Colors -->
+        <item name="colorSurface">#FF121212</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorError">@color/error_light</item>
+        <item name="colorOnError">@color/black</item>
+
+        <!-- Status Bar Styling (Dark) -->
+        <item name="android:statusBarColor">#FF121212</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Navigation Bar Styling (Dark) -->
+        <item name="android:navigationBarColor">#FF121212</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <!-- Window Background -->
+        <item name="android:windowBackground">@drawable/sf_splash_background</item>
+    </style>
+
+    <!-- Button Style -->
+    <style name="Widget.SafeDocs.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:paddingStart">@dimen/spacing_large</item>
+        <item name="android:paddingEnd">@dimen/spacing_large</item>
+    </style>
+
+    <!-- Card Style -->
+    <style name="Widget.SafeDocs.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/corner_radius_medium</item>
+        <item name="cardElevation">@dimen/elevation_small</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <!-- Toolbar Style (use valid Material3 parent for MaterialToolbar) -->
+    <style name="Widget.SafeDocs.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/surface</item>
+        <item name="android:elevation">@dimen/elevation_small</item>
+    </style>
+
+    <!-- BottomNavigationView Style -->
+    <style name="Widget.SafeDocs.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/surface</item>
+        <item name="android:elevation">@dimen/elevation_medium</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.SafeDocs.ActiveIndicator</item>
+    </style>
+
+    <!-- Active Indicator Style for BottomNav -->
+    <style name="Widget.SafeDocs.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/primary_500</item>
+    </style>
+
+    <!-- Text Style - Headline -->
+    <style name="TextStyle.SafeDocs.Headline">
+        <item name="android:textSize">@dimen/text_size_headline</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Text Style - Title -->
+    <style name="TextStyle.SafeDocs.Title">
+        <item name="android:textSize">@dimen/text_size_title</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Text Style - Body -->
+    <style name="TextStyle.SafeDocs.Body">
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Text Style - Label -->
+    <style name="TextStyle.SafeDocs.Label">
+        <item name="android:textSize">@dimen/text_size_label</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Base Text Style (to satisfy references to TextStyle.SafeDocs) -->
+    <style name="TextStyle.SafeDocs">
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Generic TextStyle (to satisfy any legacy references to style/TextStyle) -->
+    <style name="TextStyle">
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
 </resources>

@@ -1,47 +1,42 @@
-package org.devaxiom.safedocs
+﻿package org.devaxiom.safedocs
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import org.devaxiom.safedocs.ui.theme.SafeDocsTheme
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.appbar.MaterialToolbar
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            SafeDocsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+        setContentView(R.layout.activity_main)
+
+        val toolbar: MaterialToolbar = findViewById(R.id.toolbar)
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
+        val navHost = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
+        val navController = navHost.navController
+
+        val appBarConfig = AppBarConfiguration(
+            setOf(
+                R.id.documentsFragment,
+                R.id.sharedWithMeFragment,
+                R.id.familyFragment,
+                R.id.profileFragment
+            )
+        )
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfig)
+        NavigationUI.setupWithNavController(bottomNav, navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val showBottom = destination.id != R.id.loginFragment
+            bottomNav.visibility = if (showBottom) View.VISIBLE else View.GONE
+            if (!showBottom) {
+                toolbar.title = getString(R.string.app_name)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SafeDocsTheme {
-        Greeting("Android")
     }
 }

@@ -1,3 +1,46 @@
 <resources>
     <string name="app_name">SafeDocs</string>
+    <!-- OAuth 2.0 Web application client ID used for Google Sign-In ID tokens -->
+    <string name="google_server_client_id">1090470659344-ohqamrvu9mg19galvecjhn0ao776r5rm.apps.googleusercontent.com</string>
+
+    <!-- Navigation Labels -->
+    <string name="nav_documents">Documents</string>
+    <string name="nav_shared_with_me">Shared with Me</string>
+    <string name="nav_family">Family</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Action Labels -->
+    <string name="action_add">Add</string>
+    <string name="action_search">Search</string>
+    <string name="action_share">Share</string>
+    <string name="action_download">Download</string>
+    <string name="action_upload">Upload</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_more">More</string>
+
+    <!-- Common Labels -->
+    <string name="label_loading">Loading…</string>
+    <string name="label_error">Error</string>
+    <string name="label_success">Success</string>
+    <string name="label_warning">Warning</string>
+    <string name="label_info">Information</string>
+    <string name="label_retry">Retry</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_ok">OK</string>
+    <string name="label_save">Save</string>
+    <string name="label_logout">Logout</string>
+
+    <!-- Empty State Messages -->
+    <string name="empty_state_no_documents">No documents yet. Start by uploading one!</string>
+    <string name="empty_state_no_shared">Nothing shared with you yet.</string>
+    <string name="empty_state_no_family">No family members added.</string>
+
+    <!-- Login Screen -->
+    <string name="login_title">Welcome to SafeDocs</string>
+    <string name="login_email_hint">Email Address</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="login_register">Don\'t have an account? Register</string>
+
 </resources>
