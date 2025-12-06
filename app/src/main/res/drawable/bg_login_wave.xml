@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="360dp"
-    android:height="160dp"
-    android:viewportWidth="360"
-    android:viewportHeight="160">
-    <!-- Background fill -->
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M0,0 H360 V160 H0 Z" />
-    <!-- Wave shape at bottom -->
-    <path
-        android:fillColor="@color/primary_500"
-        android:pathData="M0,120 C60,140 120,160 180,160 C240,160 300,140 360,120 V160 H0 Z" />
-</vector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="?attr/colorPrimary" />
+</shape>

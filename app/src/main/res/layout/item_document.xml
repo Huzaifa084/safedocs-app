@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
-    app:cardElevation="2dp"
+    app:cardElevation="4dp"
     app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,34 +18,72 @@
 
         <ImageView
             android:id="@+id/ivDocumentIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_document"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_document_item"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:tint="?attr/colorPrimary" />
 
         <TextView
             android:id="@+id/tvDocumentTitle"
+            style="@style/TextStyle.SafeDocs.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Document Title"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
-            app:layout_constraintStart_toEndOf="@+id/ivDocumentIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            tools:text="Passport Renewal"
+            app:layout_constraintStart_toEndOf="@id/ivDocumentIcon"
+            app:layout_constraintTop_toTopOf="@id/ivDocumentIcon"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tvDocumentCategory"
+            style="@style/TextStyle.SafeDocs.Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Category"
-            android:textAppearance="?attr/textAppearanceBody2"
-            app:layout_constraintStart_toEndOf="@+id/ivDocumentIcon"
-            app:layout_constraintTop_toBottomOf="@+id/tvDocumentTitle"
-            app.layout_constraintEnd_toEndOf="parent"/>
+            android:layout_marginTop="4dp"
+            tools:text="Travel Documents"
+            app:layout_constraintStart_toStartOf="@id/tvDocumentTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvDocumentTitle"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipVisibility"
+            style="@style/Widget.SafeDocs.Chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            tools:text="FAMILY"
+            app:layout_constraintTop_toBottomOf="@id/tvDocumentCategory"
+            app:layout_constraintStart_toStartOf="@id/tvDocumentCategory" />
+
+        <LinearLayout
+            android:id="@+id/llExpiryInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDocumentCategory">
+
+            <ImageView
+                android:id="@+id/ivExpiryWarning"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_warning_amber"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginEnd="4dp"/>
+
+            <TextView
+                android:id="@+id/tvExpiryDate"
+                style="@style/TextStyle.SafeDocs.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Expires: 24 Dec 2025" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

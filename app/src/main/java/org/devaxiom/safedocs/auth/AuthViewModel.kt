@@ -5,10 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.devaxiom.safedocs.data.security.TokenManager
+import org.devaxiom.safedocs.data.security.UserManager
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     private val tokenManager = TokenManager(application)
+    private val userManager = UserManager(application)
     private val authRepository = AuthRepository()
 
     fun loginWithGoogle(idToken: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
@@ -16,10 +18,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val response = authRepository.loginWithGoogle(idToken)
                 if (response.isSuccessful && response.body()?.success == true) {
-                    response.body()?.data?.accessToken?.let {
-                        tokenManager.saveToken(it)
+                    response.body()?.data?.let { data ->
+                        tokenManager.saveToken(data.accessToken)
+                        userManager.saveUser(data.user)
                         onSuccess()
-                    } ?: onError("Access token was null in the response.")
+                    } ?: onError("User data or token was null in the response.")
                 } else {
                     val errorMessage = response.body()?.message ?: response.message() ?: "Unknown error"
                     onError(errorMessage)
@@ -28,5 +31,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 onError(e.message ?: "Network error")
             }
         }
+    }
+
+    fun logout(onSuccess: () -> Unit) {
+        // Clear local session
+        tokenManager.clearToken()
+        userManager.clearUser()
+        onSuccess()
     }
 }

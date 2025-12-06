@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.devaxiom.safedocs.R
 import org.devaxiom.safedocs.databinding.FragmentDocumentsBinding
 import org.devaxiom.safedocs.ui.document.DocumentAdapter
 import org.devaxiom.safedocs.ui.document.DocumentViewModel
@@ -33,13 +36,17 @@ class DocumentsFragment : Fragment() {
 
         setupRecyclerView()
 
+        binding.btnUpload.setOnClickListener {
+            // Use direct navigation to avoid Safe Args issues
+            findNavController().navigate(R.id.action_documents_to_upload)
+        }
+
         viewModel.documents.observe(viewLifecycleOwner) { documents ->
             binding.swipeRefresh.isRefreshing = false
             if (documents != null) {
                 documentAdapter.submitList(documents)
                 binding.tvEmpty.visibility = if (documents.isEmpty()) View.VISIBLE else View.GONE
             } else {
-                // Handle the case where the document list is null
                 documentAdapter.submitList(emptyList())
                 binding.tvEmpty.visibility = View.VISIBLE
             }
@@ -60,7 +67,11 @@ class DocumentsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        documentAdapter = DocumentAdapter { /* TODO: Handle document click */ }
+        documentAdapter = DocumentAdapter { document ->
+            // Use direct navigation with a bundle to pass arguments
+            val bundle = bundleOf("documentId" to document.id)
+            findNavController().navigate(R.id.action_global_to_document_details, bundle)
+        }
         binding.recyclerDocuments.apply {
             adapter = documentAdapter
             layoutManager = LinearLayoutManager(requireContext())

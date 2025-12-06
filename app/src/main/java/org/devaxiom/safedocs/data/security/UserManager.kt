@@ -3,9 +3,9 @@ package org.devaxiom.safedocs.data.security
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import androidx.core.content.edit
+import org.devaxiom.safedocs.data.model.User
 
-class TokenManager(context: Context) {
+class UserManager(context: Context) {
 
     private val masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -13,21 +13,28 @@ class TokenManager(context: Context) {
 
     private val sharedPreferences = EncryptedSharedPreferences.create(
         context,
-        "secret_shared_prefs",
+        "user_prefs",
         masterKey,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    fun saveToken(token: String) {
-        sharedPreferences.edit { putString("jwt_token", token) }
+    fun saveUser(user: User) {
+        sharedPreferences.edit()
+            .putString("USER_EMAIL", user.email)
+            .putString("USER_FULL_NAME", user.fullName)
+            .apply()
     }
 
-    fun getToken(): String? {
-        return sharedPreferences.getString("jwt_token", null)
+    fun getUserEmail(): String? {
+        return sharedPreferences.getString("USER_EMAIL", null)
     }
 
-    fun clearToken() {
-        sharedPreferences.edit { remove("jwt_token") }
+    fun getUserFullName(): String? {
+        return sharedPreferences.getString("USER_FULL_NAME", null)
+    }
+
+    fun clearUser() {
+        sharedPreferences.edit().clear().apply()
     }
 }

@@ -21,6 +21,7 @@
     <color name="text_secondary">#757575</color>
     <color name="divider">#BDBDBD</color>
     <color name="icon_tint">#5A6B7E</color>
+    <color name="transparent">#00000000</color>
 
     <!-- Semantic Colors -->
     <color name="error">#D32F2F</color>

@@ -1,24 +1,24 @@
-﻿package org.devaxiom.safedocs.ui
+package org.devaxiom.safedocs.ui.shared
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.devaxiom.safedocs.R
-import org.devaxiom.safedocs.databinding.FragmentFamilyBinding
+import org.devaxiom.safedocs.databinding.FragmentSharedByMeBinding
 import org.devaxiom.safedocs.ui.document.DocumentAdapter
-import org.devaxiom.safedocs.ui.document.DocumentViewModel
 
-class FamilyFragment : Fragment() {
+class SharedByMeFragment : Fragment() {
 
-    private var _binding: FragmentFamilyBinding? = null
+    private var _binding: FragmentSharedByMeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: DocumentViewModel by viewModels()
+    private val viewModel: SharedDocsViewModel by viewModels()
     private lateinit var documentAdapter: DocumentAdapter
 
     override fun onCreateView(
@@ -26,38 +26,31 @@ class FamilyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFamilyBinding.inflate(inflater, container, false)
+        _binding = FragmentSharedByMeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupRecyclerView()
 
         viewModel.documents.observe(viewLifecycleOwner) { documents ->
-            binding.swipeRefreshFamily.isRefreshing = false
-            if (documents.isNullOrEmpty()) {
-                binding.emptyStateLayout.visibility = View.VISIBLE
-                binding.recyclerFamilyDocuments.visibility = View.GONE
-            } else {
-                binding.emptyStateLayout.visibility = View.GONE
-                binding.recyclerFamilyDocuments.visibility = View.VISIBLE
-                documentAdapter.submitList(documents)
-            }
+            binding.swipeRefreshSharedByMe.isRefreshing = false
+            documentAdapter.submitList(documents)
         }
 
-        binding.swipeRefreshFamily.setOnRefreshListener {
-            viewModel.fetchDocuments("FAMILY")
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            binding.swipeRefreshSharedByMe.isRefreshing = false
+            Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
         }
 
-        binding.btnInvite.setOnClickListener {
-            // TODO: show invite dialog and call /api/family/invite
+        binding.swipeRefreshSharedByMe.setOnRefreshListener {
+            viewModel.fetchSharedByMeDocuments()
         }
 
         // Initial load
-        binding.swipeRefreshFamily.isRefreshing = true
-        viewModel.fetchDocuments("FAMILY")
+        binding.swipeRefreshSharedByMe.isRefreshing = true
+        viewModel.fetchSharedByMeDocuments()
     }
 
     private fun setupRecyclerView() {
@@ -65,7 +58,7 @@ class FamilyFragment : Fragment() {
             val bundle = bundleOf("documentId" to document.id)
             findNavController().navigate(R.id.action_global_to_document_details, bundle)
         }
-        binding.recyclerFamilyDocuments.apply {
+        binding.recyclerSharedByMe.apply {
             adapter = documentAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
