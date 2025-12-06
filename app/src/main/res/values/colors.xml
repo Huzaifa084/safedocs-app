@@ -1,60 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors (Material 3) -->
-    <!-- Professional Blue Palette -->
-    <color name="primary_200">#FFD6E4FF</color>
-    <color name="primary_500">#FF3366FF</color>
-    <color name="primary_700">#FF254EDB</color>
+    <!-- Primary Color Palette (Teal) -->
+    <color name="primary">#008577</color>
+    <color name="primary_variant">#00574B</color>
+    <color name="on_primary">#FFFFFF</color>
 
-    <!-- Secondary Colors -->
-    <!-- Indigo Accent -->
-    <color name="secondary_200">#FFE0D9FF</color>
-    <color name="secondary_500">#FF7B61FF</color>
-    <color name="secondary_700">#FF5A3FE0</color>
+    <!-- Secondary Color Palette (Slate Gray) -->
+    <color name="secondary">#5A6B7E</color>
+    <color name="secondary_variant">#3A4A5E</color>
+    <color name="on_secondary">#FFFFFF</color>
 
-    <!-- Tertiary Colors -->
-    <color name="tertiary_200">#FFFFB8C7</color>
-    <color name="tertiary_500">#FFFF7B7B</color>
-    <color name="tertiary_700">#FFCC6363</color>
+    <!-- Surface and Background -->
+    <color name="surface">#F5F7FA</color> <!-- Light gray for a soft background -->
+    <color name="surface_on">#121212</color> <!-- Dark text on light surface -->
+    <color name="background">#FFFFFF</color>
+    <color name="on_background">#121212</color>
 
-    <!-- Surface Colors -->
-    <color name="surface">#FFFFFFFF</color>
-    <color name="surface_container">#FFF5F7FA</color>
-    <color name="surface_container_high">#FFEFF2F7</color>
-    <color name="surface_variant">#FFEFF2F7</color>
+    <!-- Text and Utility Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="icon_tint">#5A6B7E</color>
 
-    <!-- Background Colors -->
-    <color name="background">#FFFBF8FE</color>
-    <color name="surface_on">#FF1D1B1F</color>
+    <!-- Semantic Colors -->
+    <color name="error">#D32F2F</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="success">#388E3C</color>
+    <color name="warning">#FFA000</color>
 
-    <!-- Error/Status Colors -->
-    <color name="error">#FFFF5252</color>
-    <color name="error_light">#FFFF7D7D</color>
-    <color name="warning">#FFFFC107</color>
-    <color name="success">#FF4CAF50</color>
-    <color name="info">#FF2196F3</color>
-
-    <!-- Text Colors -->
-    <color name="text_primary">#FF1A1F2B</color>
-    <color name="text_secondary">#FF5F6B7A</color>
-    <color name="text_tertiary">#FF79747E</color>
-    <color name="text_hint">#FFC4C7C5</color>
-    <color name="text_on_primary">#FFFFFFFF</color>
-    <color name="text_on_secondary">#FFFFFFFF</color>
-
-    <!-- Outline Colors -->
-    <color name="outline">#FF79747E</color>
-    <color name="outline_variant">#FFCAC4D0</color>
-
-    <!-- Neutrals -->
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="transparent">#00000000</color>
-
-    <!-- Legacy (for backward compatibility) -->
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
 </resources>

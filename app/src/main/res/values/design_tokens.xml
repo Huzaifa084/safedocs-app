@@ -3,7 +3,7 @@
 <!-- This file serves as a reference for all design system values -->
 <resources>
     <!-- ========== COLOR TOKENS ========== -->
-    <!-- Primary: #3B5EDB | Secondary: #FF5E8B | Tertiary: #FF7B7B -->
+    <!-- Primary: Teal (#008577) | Secondary: Slate Gray (#5A6B7E) | Accent: Soft Gold (#D4AF37) -->
 
     <!-- ========== SPACING SCALE ========== -->
     <!-- 4-8-12-16-24-32 -->
@@ -21,7 +21,7 @@
     <!-- Default: 24dp | Small: 16dp | Large: 32dp | XL: 48dp -->
 
     <!-- ========== ADAPTIVE ICON ========== -->
-    <!-- Foreground: Vector layers | Background: Solid color (#3B5EDB) -->
+    <!-- Foreground: Vector layers | Background: Solid color (#008577) -->
     <!-- Compose to 1024x1024px for export -->
 
 </resources>

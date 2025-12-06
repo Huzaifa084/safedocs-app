@@ -1,51 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Brand Color (Dark Mode) -->
-    <color name="primary_200">#FFB8D8FF</color>
-    <color name="primary_500">#FF3B5EDB</color>
-    <color name="primary_700">#FF2D4AB5</color>
+    <!-- Primary Color Palette (Teal) -->
+    <color name="primary">#00A591</color> <!-- A slightly brighter teal for dark mode -->
+    <color name="primary_variant">#008577</color>
+    <color name="on_primary">#000000</color>
 
-    <!-- Secondary Colors (Dark Mode) -->
-    <color name="secondary_200">#FFFFC7D9</color>
-    <color name="secondary_500">#FFFF5E8B</color>
-    <color name="secondary_700">#FFCC476B</color>
+    <!-- Secondary Color Palette (Light Slate) -->
+    <color name="secondary">#8A9AAE</color>
+    <color name="secondary_variant">#5A6B7E</color>
+    <color name="on_secondary">#000000</color>
 
-    <!-- Tertiary Colors (Dark Mode) -->
-    <color name="tertiary_200">#FFFFB8C7</color>
-    <color name="tertiary_500">#FFFF7B7B</color>
-    <color name="tertiary_700">#FFCC6363</color>
+    <!-- Surface and Background -->
+    <color name="surface">#1E2A3B</color> <!-- Deep slate blue for surfaces -->
+    <color name="surface_on">#E1E3E6</color> <!-- Light text on dark surface -->
+    <color name="background">#121B27</color> <!-- Even darker slate for the background -->
+    <color name="on_background">#E1E3E6</color>
 
-    <!-- Surface Colors (Dark) -->
-    <color name="surface">#FF1F1B24</color>
-    <color name="surface_container">#FF2B2630</color>
-    <color name="surface_container_high">#FF36303A</color>
-    <color name="surface_variant">#FF49454F</color>
+    <!-- Text and Utility Colors -->
+    <color name="text_primary">#F5F5F5</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="divider">#3A4A5E</color>
+    <color name="icon_tint">#8A9AAE</color>
 
-    <!-- Background Colors (Dark) -->
-    <color name="background">#FF121212</color>
-    <color name="surface_on">#FFFBF8FE</color>
+    <!-- Semantic Colors -->
+    <color name="error">#CF6679</color>
+    <color name="on_error">#000000</color>
+    <color name="success">#66BB6A</color>
+    <color name="warning">#FFB74D</color>
 
-    <!-- Error/Status Colors (Dark) -->
-    <color name="error">#FFFF7D7D</color>
-    <color name="error_light">#FFFF5252</color>
-    <color name="warning">#FFFFC107</color>
-    <color name="success">#FF81C784</color>
-    <color name="info">#FF64B5F6</color>
-
-    <!-- Text Colors (Dark) -->
-    <color name="text_primary">#FFFBF8FE</color>
-    <color name="text_secondary">#FFCAC4D0</color>
-    <color name="text_tertiary">#FFA6A9AE</color>
-    <color name="text_hint">#FF49454F</color>
-    <color name="text_on_primary">#FF1D1B1F</color>
-    <color name="text_on_secondary">#FFFFFFFF</color>
-
-    <!-- Outline Colors (Dark) -->
-    <color name="outline">#FF79747E</color>
-    <color name="outline_variant">#FF49454F</color>
-
-    <!-- Neutrals -->
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="transparent">#00000000</color>
 </resources>
