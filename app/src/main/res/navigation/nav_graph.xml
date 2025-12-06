@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/loginFragment"> <!-- START ON LOGIN SCREEN -->
 
-    <!-- Global action to navigate to document details from anywhere -->
+    <!-- Global action to go to the details screen -->
     <action
         android:id="@+id/action_global_to_document_details"
         app:destination="@id/documentDetailsFragment" />
 
+    <!-- Login Screen -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="org.devaxiom.safedocs.ui.LoginFragment"
-        android:label="Login"
-        tools:layout="@layout/fragment_login">
+        android:label="Welcome">
         <action
-            android:id="@+id/action_login_to_documents"
+            android:id="@+id/action_login_to_main_flow"
             app:destination="@id/documentsFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
+    <!-- Main App Screens -->
     <fragment
         android:id="@+id/documentsFragment"
         android:name="org.devaxiom.safedocs.ui.DocumentsFragment"
-        android:label="Documents"
-        tools:layout="@layout/fragment_documents">
+        android:label="Documents">
         <action
             android:id="@+id/action_documents_to_upload"
             app:destination="@id/uploadFragment" />
@@ -35,20 +35,17 @@
     <fragment
         android:id="@+id/sharedWithMeFragment"
         android:name="org.devaxiom.safedocs.ui.SharedWithMeFragment"
-        android:label="Shared"
-        tools:layout="@layout/fragment_shared_with_me" />
+        android:label="Shared" />
 
     <fragment
         android:id="@+id/familyFragment"
         android:name="org.devaxiom.safedocs.ui.FamilyFragment"
-        android:label="Family"
-        tools:layout="@layout/fragment_family" />
+        android:label="Family" />
 
     <fragment
         android:id="@+id/profileFragment"
         android:name="org.devaxiom.safedocs.ui.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile">
+        android:label="Profile">
         <action
             android:id="@+id/action_profile_to_login"
             app:destination="@id/loginFragment"
@@ -56,17 +53,16 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <!-- Detail & Upload Screens -->
     <fragment
         android:id="@+id/uploadFragment"
         android:name="org.devaxiom.safedocs.ui.upload.UploadFragment"
-        android:label="Upload Document"
-        tools:layout="@layout/fragment_upload" />
+        android:label="Upload Document" />
 
     <fragment
         android:id="@+id/documentDetailsFragment"
         android:name="org.devaxiom.safedocs.ui.document.DocumentDetailsFragment"
-        android:label="Document Details"
-        tools:layout="@layout/fragment_document_details">
+        android:label="Document Details">
         <argument
             android:name="documentId"
             app:argType="string" />

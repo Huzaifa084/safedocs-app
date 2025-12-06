@@ -33,9 +33,8 @@ class LoginFragment : Fragment() {
                 viewModel.loginWithGoogle(idToken,
                     onSuccess = {
                         Log.d("LoginFragment", "Backend login success! Navigating to documents.")
-                        // It's good practice to navigate on the main thread.
                         activity?.runOnUiThread {
-                            findNavController().navigate(R.id.action_login_to_documents)
+                            findNavController().navigate(R.id.action_login_to_main_flow)
                         }
                     },
                     onError = { errorMessage ->
