@@ -44,6 +44,9 @@
     <string name="login_button">Continue with Google</string>
     <string name="login_register">Create your account</string>
     <string name="login_continue_as_guest">Continue as guest</string>
-    <string name="guest_prompt_message">Sign in to see your documents</string>
+    <string name="guest_prompt_message">Create your free account to unlock syncing, sharing, and backups.</string>
+    <string name="guest_nudge_title">Create an Account to Get Started</string>
+    <string name="guest_nudge_subtitle">Sign up to securely save, sync, and access your documents anywhere.</string>
+    <string name="guest_nudge_cta">Create free account</string>
 
 </resources>

@@ -36,12 +36,13 @@
         <item name="android:paddingEnd">@dimen/spacing_large</item>
     </style>
 
-    <!-- Secondary (Outlined) Button Style -->
-    <style name="Widget.SafeDocs.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">?attr/colorPrimary</item>
-        <item name="strokeColor">?attr/colorPrimary</item>
-        <item name="iconTint">?attr/colorPrimary</item>
+    <!-- Secondary Button Style (filled, high-contrast) -->
+    <style name="Widget.SafeDocs.Button.Secondary" parent="Widget.Material3.Button">
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="backgroundTint">?attr/colorSecondary</item>
+        <item name="iconTint">?attr/colorOnSecondary</item>
         <item name="android:layout_height">48dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- Destructive (Outlined) Button Style -->

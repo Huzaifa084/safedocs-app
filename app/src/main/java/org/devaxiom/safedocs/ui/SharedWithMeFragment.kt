@@ -35,8 +35,8 @@ class SharedWithMeFragment : Fragment() {
         GuestUiController.bind(
             fragment = this,
             lifecycleOwner = viewLifecycleOwner,
-            bannerView = binding.guestBannerShared,
-            signInButton = binding.btnGuestSignInShared,
+            bannerView = binding.guestNudgeShared.root,
+            signInButton = binding.guestNudgeShared.btnGoogle,
             promptMessage = getString(R.string.guest_prompt_message)
         ) {
             // Standardized post-login refresh for inner pages

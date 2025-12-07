@@ -90,19 +90,22 @@
         android:layout_marginBottom="16dp"
         android:text="Continue with Google"
         app:icon="@drawable/ic_google_logo"
+        app:iconTint="@color/on_primary"
         app:iconPadding="16dp"
         app:layout_constraintBottom_toTopOf="@+id/btnSkip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Skip Button -->
+    <!-- Continue as Guest Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSkip"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="wrap_content"
+        style="@style/Widget.SafeDocs.Button.Secondary"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Skip for now"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="40dp"
+        android:text="Continue as guest"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -13,6 +13,7 @@ import org.devaxiom.safedocs.R
 import org.devaxiom.safedocs.auth.AuthViewModel
 import org.devaxiom.safedocs.data.security.SessionManager
 import org.devaxiom.safedocs.databinding.FragmentProfileBinding
+import org.devaxiom.safedocs.ui.guest.GuestUiController
 
 class ProfileFragment : Fragment() {
 
@@ -38,18 +39,33 @@ class ProfileFragment : Fragment() {
         binding.tvUserName.text = sessionManager.getUserFullName() ?: "User"
         binding.tvUserEmail.text = sessionManager.getUserEmail() ?: "No email found"
 
-        // Show logout only for authenticated users; otherwise tease sign-in
+        // Centralized guest nudge across tabs
+        GuestUiController.bind(
+            fragment = this,
+            lifecycleOwner = viewLifecycleOwner,
+            bannerView = binding.guestNudge.root,
+            signInButton = binding.guestNudge.btnGoogle,
+            promptMessage = getString(R.string.guest_prompt_message)
+        ) {
+            // Update visible profile info after login
+            binding.tvUserName.text = sessionManager.getUserFullName() ?: "User"
+            binding.tvUserEmail.text = sessionManager.getUserEmail() ?: "No email found"
+            setupLogout()
+        }
+
+        // Show either Logout (auth) or Nudge (guest)
         if (sessionManager.isGuest()) {
-            binding.btnLogout.text = getString(R.string.action_sign_in)
-            binding.btnLogout.setIconResource(R.drawable.ic_google_logo)
-            binding.btnLogout.setOnClickListener {
-                findNavController().navigate(R.id.action_profile_to_login)
-            }
+            binding.btnLogout.visibility = View.GONE
         } else {
-            // Logout button logic
-            binding.btnLogout.setOnClickListener {
-                signOutAndNavigate()
-            }
+            setupLogout()
+        }
+    }
+
+    private fun setupLogout() {
+        binding.btnLogout.visibility = View.VISIBLE
+        // Logout button logic
+        binding.btnLogout.setOnClickListener {
+            signOutAndNavigate()
         }
     }
 

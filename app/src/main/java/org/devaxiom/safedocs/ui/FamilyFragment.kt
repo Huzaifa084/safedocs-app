@@ -40,8 +40,8 @@ class FamilyFragment : Fragment() {
         GuestUiController.bind(
             fragment = this,
             lifecycleOwner = viewLifecycleOwner,
-            bannerView = binding.guestBannerFamily,
-            signInButton = binding.btnGuestSignInFamily,
+            bannerView = binding.guestNudgeFamily.root,
+            signInButton = binding.guestNudgeFamily.btnGoogle,
             promptMessage = getString(R.string.guest_prompt_message)
         ) {
             binding.swipeRefreshFamily.isRefreshing = true
@@ -73,9 +73,14 @@ class FamilyFragment : Fragment() {
             // TODO: show invite dialog and call /api/family/invite
         }
 
-        // Initial load
+        // Initial load with guest gating (do not hit APIs when guest)
         binding.swipeRefreshFamily.isRefreshing = true
-        viewModel.fetchDocuments("FAMILY")
+        val sessionManager = org.devaxiom.safedocs.data.security.SessionManager(requireContext())
+        if (sessionManager.isGuest()) {
+            binding.swipeRefreshFamily.isRefreshing = false
+        } else {
+            viewModel.fetchDocuments("FAMILY")
+        }
     }
 
     private fun setupRecyclerView() {

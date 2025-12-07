@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.devaxiom.safedocs.data.DocumentRepository
 import org.devaxiom.safedocs.data.model.Document
+import org.devaxiom.safedocs.data.security.SessionManager
 
 class SharedDocsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -23,6 +24,12 @@ class SharedDocsViewModel(application: Application) : AndroidViewModel(applicati
     // Correctly calls GET /api/documents?type=SHARED
     fun fetchSharedByMeDocuments() {
         viewModelScope.launch {
+            val isGuest = SessionManager(getApplication()).isGuest()
+            if (isGuest) {
+                _documents.postValue(emptyList())
+                _error.postValue("")
+                return@launch
+            }
             try {
                 val response = documentRepository.getDocuments("SHARED")
                 if (response.isSuccessful && response.body()?.success == true) {
@@ -43,6 +50,12 @@ class SharedDocsViewModel(application: Application) : AndroidViewModel(applicati
     // Correctly calls GET /api/documents/shared/with-me
     fun fetchSharedWithMeDocuments() {
         viewModelScope.launch {
+            val isGuest = SessionManager(getApplication()).isGuest()
+            if (isGuest) {
+                _documents.postValue(emptyList())
+                _error.postValue("")
+                return@launch
+            }
             try {
                 val response = documentRepository.getSharedWithMeDocuments()
                 if (response.isSuccessful && response.body()?.success == true) {

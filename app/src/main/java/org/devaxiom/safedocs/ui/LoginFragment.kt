@@ -17,7 +17,6 @@ import org.devaxiom.safedocs.R
 import org.devaxiom.safedocs.auth.AuthViewModel
 import org.devaxiom.safedocs.data.security.SessionManager
 import org.devaxiom.safedocs.databinding.FragmentLoginBinding
-import org.devaxiom.safedocs.ui.auth.LoginBottomSheetFragment
 
 class LoginFragment : Fragment() {
 
@@ -26,36 +25,59 @@ class LoginFragment : Fragment() {
     private val viewModel: AuthViewModel by viewModels()
     private lateinit var sessionManager: SessionManager
 
-    private val googleSignInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            val idToken = account?.idToken
-            if (!idToken.isNullOrEmpty()) {
-                Log.d("LoginFragment", "Got Google ID Token, attempting to log in with backend.")
-                viewModel.loginWithGoogle(idToken,
-                    onSuccess = {
-                        Log.d("LoginFragment", "Backend login success! Navigating to documents.")
-                        activity?.runOnUiThread {
-                            findNavController().navigate(R.id.action_login_to_main_flow)
+    private val googleSignInLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                val idToken = account?.idToken
+                if (!idToken.isNullOrEmpty()) {
+                    Log.d(
+                        "LoginFragment",
+                        "Got Google ID Token, attempting to log in with backend."
+                    )
+                    viewModel.loginWithGoogle(
+                        idToken,
+                        onSuccess = {
+                            Log.d(
+                                "LoginFragment",
+                                "Backend login success! Navigating to documents."
+                            )
+                            activity?.runOnUiThread {
+                                findNavController().navigate(R.id.action_login_to_main_flow)
+                            }
+                        },
+                        onError = { errorMessage ->
+                            Log.e("LoginFragment", "Backend login failed: $errorMessage")
+                            activity?.runOnUiThread {
+                                Toast.makeText(
+                                    context,
+                                    "Login Failed: $errorMessage",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
-                    },
-                    onError = { errorMessage ->
-                        Log.e("LoginFragment", "Backend login failed: $errorMessage")
-                        activity?.runOnUiThread {
-                            Toast.makeText(context, "Login Failed: $errorMessage", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                )
-            } else {
-                 Log.w("LoginFragment", "Google ID Token is null or empty after successful sign-in.")
-                 Toast.makeText(context, "Could not get Google credentials. Please try again.", Toast.LENGTH_SHORT).show()
+                    )
+                } else {
+                    Log.w(
+                        "LoginFragment",
+                        "Google ID Token is null or empty after successful sign-in."
+                    )
+                    Toast.makeText(
+                        context,
+                        "Could not get Google credentials. Please try again.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: ApiException) {
+                Log.e("LoginFragment", "Google Sign-In failed. Status code: ${e.statusCode}", e)
+                Toast.makeText(
+                    context,
+                    "Google Sign-In failed. Please check your network connection and try again.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-        } catch (e: ApiException) {
-            Log.e("LoginFragment", "Google Sign-In failed. Status code: ${e.statusCode}", e)
-            Toast.makeText(context, "Google Sign-In failed. Please check your network connection and try again.", Toast.LENGTH_LONG).show()
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.devaxiom.safedocs.data.DocumentRepository
 import org.devaxiom.safedocs.data.model.Document
+import org.devaxiom.safedocs.data.security.SessionManager
 
 class DocumentViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -28,6 +29,13 @@ class DocumentViewModel(application: Application) : AndroidViewModel(application
         expiryTo: String? = null
     ) {
         viewModelScope.launch {
+            // Global guest gating: do not hit APIs, clear errors, show empty state
+            val isGuest = SessionManager(getApplication()).isGuest()
+            if (isGuest) {
+                _documents.postValue(emptyList())
+                _error.postValue("")
+                return@launch
+            }
             try {
                 val response = documentRepository.getDocuments(type, search, category, expiryFrom, expiryTo)
                 if (response.isSuccessful && response.body()?.success == true) {

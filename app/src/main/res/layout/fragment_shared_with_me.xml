@@ -5,51 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Guest Banner -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/guestBannerShared"
+    <!-- Guest Nudge (reusable) -->
+    <include
+        android:id="@+id/guestNudgeShared"
+        layout="@layout/view_guest_login_nudge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
-        app:strokeWidth="0dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="12dp"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_info"
-                android:tint="?attr/colorOnSurfaceVariant" />
-
-            <TextView
-                android:id="@+id/tvGuestMessageShared"
-                style="@style/TextStyle.SafeDocs.Body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:text="You’re browsing as guest. Sign in to see shared documents." />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGuestSignInShared"
-                style="@style/Widget.SafeDocs.Button.Secondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign in" />
-
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        android:visibility="gone"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

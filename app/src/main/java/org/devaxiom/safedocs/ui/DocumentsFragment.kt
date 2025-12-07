@@ -47,8 +47,8 @@ class DocumentsFragment : Fragment() {
             GuestUiController.bind(
             fragment = this,
             lifecycleOwner = viewLifecycleOwner,
-            bannerView = binding.guestBanner,
-            signInButton = binding.btnGuestSignIn,
+            bannerView = binding.guestNudge.root,
+            signInButton = binding.guestNudge.btnGoogle,
             promptMessage = getString(R.string.guest_prompt_message),
             onAuthenticated = {
                 binding.swipeRefresh.isRefreshing = true
@@ -81,10 +81,9 @@ class DocumentsFragment : Fragment() {
             binding.swipeRefresh.isRefreshing = false
             val isGuest = sessionManager.isGuest()
             if (isGuest) {
-                // Suppress raw 400 and show friendly banner
-                binding.guestBanner.visibility = View.VISIBLE
-                Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
-            } else {
+                // Suppress raw errors and show friendly guest nudge
+                binding.guestNudge.root.visibility = View.VISIBLE
+            } else if (!error.isNullOrEmpty()) {
                 Toast.makeText(context, "Error loading documents: $error", Toast.LENGTH_LONG).show()
             }
         }
@@ -123,7 +122,7 @@ class DocumentsFragment : Fragment() {
             "login_success",
             viewLifecycleOwner
         ) { _, _ ->
-            binding.guestBanner.visibility = View.GONE
+            binding.guestNudge.root.visibility = View.GONE
             binding.swipeRefresh.isRefreshing = true
             viewModel.fetchDocuments("PERSONAL")
         }
