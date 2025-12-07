@@ -63,10 +63,12 @@ class ProfileFragment : Fragment() {
 
     private fun updateProfileUI() {
         if (sessionManager.isGuest()) {
+            binding.profileContentScroll.visibility = View.GONE
             binding.tvUserName.text = "Guest User"
             binding.tvUserEmail.visibility = View.GONE
             binding.ivProfileAvatar.alpha = 0.5f
         } else {
+            binding.profileContentScroll.visibility = View.VISIBLE
             binding.tvUserName.text = sessionManager.getUserFullName() ?: "User"
             binding.tvUserEmail.text = sessionManager.getUserEmail() ?: ""
             binding.tvUserEmail.visibility = View.VISIBLE
