@@ -171,6 +171,9 @@ class DocumentDetailsFragment : Fragment() {
         val etCategory = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etEditCategory)
         val etExpiry = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etEditExpiry)
         val etShareWith = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etEditShareWith)
+        val tilTitle = dialogView.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tilEditTitle)
+        val tilCategory = dialogView.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tilEditCategory)
+        val tilShareWith = dialogView.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tilEditShareWith)
         val btnPickFile = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnPickFile)
         val tvPickedFileName = dialogView.findViewById<android.widget.TextView>(R.id.tvPickedFileName)
         etTitle.setText(doc.title)
@@ -209,6 +212,9 @@ class DocumentDetailsFragment : Fragment() {
                 val categoryOk = !etCategory.text.isNullOrBlank()
                 val emailText = etShareWith.text?.toString()?.trim()
                 val emailOk = emailText.isNullOrEmpty() || Patterns.EMAIL_ADDRESS.matcher(emailText).matches()
+                tilTitle.error = if (!titleOk) "Title is required" else null
+                tilCategory.error = if (!categoryOk) "Category is required" else null
+                tilShareWith.error = if (!emailOk) "Invalid email" else null
                 return titleOk && categoryOk && emailOk
             }
             fun updatePickedFileName() {
