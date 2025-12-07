@@ -44,5 +44,6 @@
     <string name="login_button">Continue with Google</string>
     <string name="login_register">Create your account</string>
     <string name="login_continue_as_guest">Continue as guest</string>
+    <string name="guest_prompt_message">Sign in to see your documents</string>
 
 </resources>

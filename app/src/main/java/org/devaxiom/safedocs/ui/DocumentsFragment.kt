@@ -14,6 +14,12 @@ import org.devaxiom.safedocs.R
 import org.devaxiom.safedocs.databinding.FragmentDocumentsBinding
 import org.devaxiom.safedocs.ui.document.DocumentAdapter
 import org.devaxiom.safedocs.ui.document.DocumentViewModel
+import org.devaxiom.safedocs.data.security.SessionManager
+import org.devaxiom.safedocs.ui.auth.LoginBottomSheetFragment
+import org.devaxiom.safedocs.ui.auth.LoginPrompt
+import org.devaxiom.safedocs.ui.guest.GuestUiController
+import org.devaxiom.safedocs.events.AuthEventBus
+import org.devaxiom.safedocs.ui.util.PostLoginRefresher
 
 class DocumentsFragment : Fragment() {
 
@@ -36,6 +42,25 @@ class DocumentsFragment : Fragment() {
 
         setupRecyclerView()
 
+        // Centralized guest banner behavior
+        val sessionManager = SessionManager(requireContext())
+            GuestUiController.bind(
+            fragment = this,
+            lifecycleOwner = viewLifecycleOwner,
+            bannerView = binding.guestBanner,
+            signInButton = binding.btnGuestSignIn,
+            promptMessage = getString(R.string.guest_prompt_message),
+            onAuthenticated = {
+                binding.swipeRefresh.isRefreshing = true
+                viewModel.fetchDocuments("PERSONAL")
+            }
+        )
+
+            PostLoginRefresher.bind(this, viewLifecycleOwner) {
+                binding.swipeRefresh.isRefreshing = true
+                viewModel.fetchDocuments("PERSONAL")
+            }
+
         binding.btnUpload.setOnClickListener {
             // Use direct navigation to avoid Safe Args issues
             findNavController().navigate(R.id.action_documents_to_upload)
@@ -54,7 +79,14 @@ class DocumentsFragment : Fragment() {
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             binding.swipeRefresh.isRefreshing = false
-            Toast.makeText(context, "Error loading documents: $error", Toast.LENGTH_LONG).show()
+            val isGuest = sessionManager.isGuest()
+            if (isGuest) {
+                // Suppress raw 400 and show friendly banner
+                binding.guestBanner.visibility = View.VISIBLE
+                Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Error loading documents: $error", Toast.LENGTH_LONG).show()
+            }
         }
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -63,7 +95,23 @@ class DocumentsFragment : Fragment() {
 
         // Initial load
         binding.swipeRefresh.isRefreshing = true
-        viewModel.fetchDocuments("PERSONAL")
+        if (!sessionManager.isGuest()) {
+            viewModel.fetchDocuments("PERSONAL")
+        } else {
+            binding.swipeRefresh.isRefreshing = false
+            // Keep list empty for guests and encourage sign-in via banner
+            documentAdapter.submitList(emptyList())
+            binding.tvEmpty.visibility = View.GONE
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            "login_success",
+            viewLifecycleOwner
+        ) { _, _ ->
+            binding.guestBanner.visibility = View.GONE
+            binding.swipeRefresh.isRefreshing = true
+            viewModel.fetchDocuments("PERSONAL")
+        }
     }
 
     private fun setupRecyclerView() {

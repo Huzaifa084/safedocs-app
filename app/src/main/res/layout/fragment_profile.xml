@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Logout"
+        android:text="Sign in"
         app:icon="@drawable/ic_logout"
         app:layout_constraintTop_toBottomOf="@id/tvUserEmail"
         app:layout_constraintStart_toStartOf="parent"

@@ -19,6 +19,7 @@ object ApiClient {
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(context))
+            .addInterceptor(ResponseInterceptor(context))
             .addInterceptor(loggingInterceptor)
             .build()
 

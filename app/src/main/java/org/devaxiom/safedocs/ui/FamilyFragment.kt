@@ -13,6 +13,8 @@ import org.devaxiom.safedocs.R
 import org.devaxiom.safedocs.databinding.FragmentFamilyBinding
 import org.devaxiom.safedocs.ui.document.DocumentAdapter
 import org.devaxiom.safedocs.ui.document.DocumentViewModel
+import org.devaxiom.safedocs.ui.guest.GuestUiController
+import org.devaxiom.safedocs.ui.util.PostLoginRefresher
 
 class FamilyFragment : Fragment() {
 
@@ -34,6 +36,22 @@ class FamilyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+
+        GuestUiController.bind(
+            fragment = this,
+            lifecycleOwner = viewLifecycleOwner,
+            bannerView = binding.guestBannerFamily,
+            signInButton = binding.btnGuestSignInFamily,
+            promptMessage = getString(R.string.guest_prompt_message)
+        ) {
+            binding.swipeRefreshFamily.isRefreshing = true
+            viewModel.fetchDocuments("FAMILY")
+        }
+
+        PostLoginRefresher.bind(this, viewLifecycleOwner) {
+            binding.swipeRefreshFamily.isRefreshing = true
+            viewModel.fetchDocuments("FAMILY")
+        }
 
         viewModel.documents.observe(viewLifecycleOwner) { documents ->
             binding.swipeRefreshFamily.isRefreshing = false

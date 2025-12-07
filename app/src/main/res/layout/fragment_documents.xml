@@ -10,8 +10,8 @@
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_wave_bottom"
         android:alpha="0.1"
+        android:background="@drawable/bg_wave_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.2"
@@ -20,9 +20,9 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:alpha="0.15"
         android:scaleType="fitXY"
         android:src="@drawable/bg_wave_top"
-        android:alpha="0.15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.25"
@@ -36,10 +36,10 @@
         android:layout_margin="16dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp"
-        app:strokeWidth="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeWidth="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,6 +79,55 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- Guest Banner -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/guestBanner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerCard"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_info"
+                android:tint="?attr/colorOnSurfaceVariant" />
+
+            <TextView
+                android:id="@+id/tvGuestMessage"
+                style="@style/TextStyle.SafeDocs.Body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:text="You’re browsing as guest. Sign in to see your documents." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuestSignIn"
+                style="@style/Widget.SafeDocs.Button.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign in" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="0dp"
@@ -86,7 +135,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerCard">
+        app:layout_constraintTop_toBottomOf="@id/guestBanner">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerDocuments"

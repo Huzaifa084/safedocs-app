@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.devaxiom.safedocs.R
 import org.devaxiom.safedocs.databinding.FragmentSharedToMeBinding
 import org.devaxiom.safedocs.ui.document.DocumentAdapter
+import org.devaxiom.safedocs.data.security.SessionManager
 
 class SharedToMeFragment : Fragment() {
 
@@ -48,9 +49,22 @@ class SharedToMeFragment : Fragment() {
             viewModel.fetchSharedWithMeDocuments()
         }
 
-        // Initial load
+        // Initial load with guest gating
         binding.swipeRefreshSharedToMe.isRefreshing = true
-        viewModel.fetchSharedWithMeDocuments()
+        val sessionManager = SessionManager(requireContext())
+        if (sessionManager.isGuest()) {
+            binding.swipeRefreshSharedToMe.isRefreshing = false
+        } else {
+            viewModel.fetchSharedWithMeDocuments()
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            "login_success",
+            viewLifecycleOwner
+        ) { _, _ ->
+            binding.swipeRefreshSharedToMe.isRefreshing = true
+            viewModel.fetchSharedWithMeDocuments()
+        }
     }
 
     private fun setupRecyclerView() {
