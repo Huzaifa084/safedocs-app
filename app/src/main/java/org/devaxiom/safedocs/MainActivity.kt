@@ -8,7 +8,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import org.devaxiom.safedocs.databinding.ActivityMainBinding
-import org.devaxiom.safedocs.data.security.SessionManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,31 +25,26 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-
-        // Decide start destination: login first, unless already authenticated
-        val sessionManager = SessionManager(this)
-        val startDest = if (sessionManager.isGuest()) R.id.loginFragment else R.id.documentsFragment
-        navGraph.setStartDestination(startDest)
-        navController.graph = navGraph
-
         val appBarConfiguration = AppBarConfiguration(
             setOf(
+                // Define top-level destinations where the Up button should not be shown
                 R.id.documentsFragment,
                 R.id.sharedWithMeFragment,
                 R.id.familyFragment,
-                R.id.profileFragment
+                R.id.profileFragment,
+                R.id.loginFragment // The login screen is also a top-level destination
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
+        // This listener now correctly handles UI visibility for all screens.
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isTopLevelDestination = appBarConfiguration.topLevelDestinations.contains(destination.id)
-            binding.navView.isVisible = isTopLevelDestination
-            supportActionBar?.setDisplayHomeAsUpEnabled(!isTopLevelDestination)
-            supportActionBar?.setDisplayShowHomeEnabled(!isTopLevelDestination)
-
+            // The bottom nav should only be visible on the main app screens, not login.
+            val isMainAppScreen = destination.id != R.id.loginFragment
+            
+            binding.navView.isVisible = isMainAppScreen
             supportActionBar?.show()
         }
     }

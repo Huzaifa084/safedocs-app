@@ -26,7 +26,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.35"
-        app:layout_constraintStart_toStartOf="parent"
         app:tint="?attr/colorPrimaryVariant" />
 
     <!-- Centering Guideline -->
@@ -88,26 +87,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginBottom="12dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
+        android:layout_marginBottom="16dp"
         android:text="Continue with Google"
-        app:icon="@drawable/ic_google_logo" 
+        app:icon="@drawable/ic_google_logo"
         app:iconPadding="16dp"
-        app:layout_constraintBottom_toTopOf="@id/btnSkip"
+        app:layout_constraintBottom_toTopOf="@+id/btnSkip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Skip Login Button -->
+    <!-- Skip Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSkip"
-        style="@style/Widget.SafeDocs.Button.Secondary"
-        android:layout_width="0dp"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="48dp"
-        android:text="@string/login_continue_as_guest"
+        android:layout_marginBottom="32dp"
+        android:text="Skip for now"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

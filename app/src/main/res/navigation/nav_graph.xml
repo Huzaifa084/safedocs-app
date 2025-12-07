@@ -5,7 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment"> <!-- START ON LOGIN SCREEN -->
 
-    <!-- Global action to go to the details screen -->
+    <!-- Global action to navigate to document details -->
     <action
         android:id="@+id/action_global_to_document_details"
         app:destination="@id/documentDetailsFragment" />
@@ -67,10 +67,5 @@
             android:name="documentId"
             app:argType="string" />
     </fragment>
-
-    <fragment
-        android:id="@+id/familyMembersFragment"
-        android:name="org.devaxiom.safedocs.ui.family.FamilyMembersFragment"
-        android:label="Family Members" />
 
 </navigation>
