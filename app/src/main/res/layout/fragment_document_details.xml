@@ -12,10 +12,11 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!-- Header -->
         <ImageView
             android:id="@+id/ivDocumentIcon"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:src="@drawable/ic_document_item"
             app:tint="?attr/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +35,7 @@
 
         <TextView
             android:id="@+id/tvDocumentCategory"
-            style="@style/TextStyle.SafeDocs.Label"
+            style="@style/TextStyle.SafeDocs.Body"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -44,7 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider"
+            android:id="@+id/divider1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -52,6 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Document Info Section -->
         <TextView
             android:id="@+id/tvLabelOwner"
             style="@style/TextStyle.SafeDocs.Label"
@@ -59,7 +61,7 @@
             android:layout_height="wrap_content"
             android:text="Owner"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintTop_toBottomOf="@id/divider1"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -109,96 +111,111 @@
             app:layout_constraintTop_toBottomOf="@id/tvLabelExpiry"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Actions and sharing section container -->
+
+        <!-- Action Buttons -->
         <LinearLayout
+            android:id="@+id/action_buttons_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@id/tvExpiryDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Actions row -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDownload"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:text="Download"
+                app:icon="@drawable/ic_download" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnDownload"
-                    style="@style/Widget.SafeDocs.Button.Primary"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Download"
-                    app:icon="@drawable/ic_download"
-                    app:iconTint="@color/on_primary" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnDelete"
-                    style="@style/Widget.SafeDocs.Button.Destructive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Delete"
-                    app:icon="@drawable/ic_delete"
-                    app:iconTint="@color/error" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEdit"
-                    style="@style/Widget.SafeDocs.Button.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Edit"
-                    app:icon="@drawable/ic_edit" />
-            </LinearLayout>
-
-            <!-- Shares Section -->
-            <TextView
-                android:id="@+id/tvSharesLabel"
-                style="@style/TextStyle.SafeDocs.Title"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEdit"
+                style="@style/Widget.SafeDocs.Button.Primary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Shared With"
-                android:textColor="?attr/colorOnSurface" />
+                android:layout_marginStart="8dp"
+                android:text="Edit"
+                app:icon="@drawable/ic_edit" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerShares"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilShareEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Share with (email)">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etShareEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnAddShare"
-                    style="@style/Widget.SafeDocs.Button.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add"
-                    app:icon="@drawable/ic_add_user" />
-            </LinearLayout>
         </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDelete"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Delete Document"
+            app:icon="@drawable/ic_delete"
+            app:iconTint="@color/error"
+            android:textColor="@color/error"
+            app:strokeColor="@color/error"
+            app:layout_constraintTop_toBottomOf="@id/action_buttons_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/btnDelete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Share Section -->
+        <TextView
+            android:id="@+id/tvSharesLabel"
+            style="@style/TextStyle.SafeDocs.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shared With"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/divider2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerShares"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tvSharesLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilShareEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Share with new person (email)"
+            app:layout_constraintTop_toBottomOf="@id/recyclerShares"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etShareEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddShare"
+            style="@style/Widget.SafeDocs.Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Add Recipient"
+            app:icon="@drawable/ic_add_user"
+            app:layout_constraintTop_toBottomOf="@id/tilShareEmail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
