@@ -42,7 +42,9 @@ class FamilyFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner,
             bannerView = binding.guestNudgeFamily.root,
             signInButton = binding.guestNudgeFamily.btnGoogle,
-            promptMessage = getString(R.string.guest_prompt_message)
+            titleResId = R.string.guest_family_title,
+            subtitleResId = R.string.guest_family_subtitle,
+            iconResId = R.drawable.ic_nav_family
         ) {
             binding.swipeRefreshFamily.isRefreshing = true
             viewModel.fetchDocuments("FAMILY")

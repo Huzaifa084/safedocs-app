@@ -12,6 +12,25 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!-- Guest Nudge Layout (Initially Gone) -->
+        <include
+            android:id="@+id/guestNudge"
+            layout="@layout/view_guest_login_nudge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Upload Form Content Group -->
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/uploadFormGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tvUploadTitle,tilTitle,tilCategory,tvVisibilityLabel,rgVisibility,tilShareWith,btnSelectFile,tvSelectedFileName,btnUpload" />
+
         <TextView
             android:id="@+id/tvUploadTitle"
             style="@style/TextStyle.SafeDocs.Title"

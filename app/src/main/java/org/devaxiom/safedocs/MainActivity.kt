@@ -40,17 +40,19 @@ class MainActivity : AppCompatActivity() {
 
         // This listener now correctly handles UI visibility for all screens.
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            val isTopLevelDestination = appBarConfiguration.topLevelDestinations.contains(destination.id)
+            val isTopLevelDestination =
+                appBarConfiguration.topLevelDestinations.contains(destination.id)
             // The bottom nav should only be visible on the main app screens, not login.
             val isMainAppScreen = destination.id != R.id.loginFragment
-            
+
             binding.navView.isVisible = isMainAppScreen
             supportActionBar?.show()
         }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
+        val navController =
+            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment).navController
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

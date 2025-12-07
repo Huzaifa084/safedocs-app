@@ -37,7 +37,9 @@ class SharedWithMeFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner,
             bannerView = binding.guestNudgeShared.root,
             signInButton = binding.guestNudgeShared.btnGoogle,
-            promptMessage = getString(R.string.guest_prompt_message)
+            titleResId = R.string.guest_shared_title,
+            subtitleResId = R.string.guest_shared_subtitle,
+            iconResId = R.drawable.ic_nav_shared
         ) {
             // Standardized post-login refresh for inner pages
             val newAdapter = ViewPagerAdapter(childFragmentManager, lifecycle)

@@ -35,9 +35,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Bind user info from the correct SessionManager
-        binding.tvUserName.text = sessionManager.getUserFullName() ?: "User"
-        binding.tvUserEmail.text = sessionManager.getUserEmail() ?: "No email found"
+        // Bind user info
+        updateProfileUI()
 
         // Centralized guest nudge across tabs
         GuestUiController.bind(
@@ -45,11 +44,12 @@ class ProfileFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner,
             bannerView = binding.guestNudge.root,
             signInButton = binding.guestNudge.btnGoogle,
-            promptMessage = getString(R.string.guest_prompt_message)
+            titleResId = R.string.guest_profile_title,
+            subtitleResId = R.string.guest_profile_subtitle,
+            iconResId = R.drawable.ic_nav_profile
         ) {
             // Update visible profile info after login
-            binding.tvUserName.text = sessionManager.getUserFullName() ?: "User"
-            binding.tvUserEmail.text = sessionManager.getUserEmail() ?: "No email found"
+            updateProfileUI()
             setupLogout()
         }
 
@@ -61,8 +61,22 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun updateProfileUI() {
+        if (sessionManager.isGuest()) {
+            binding.tvUserName.text = "Guest User"
+            binding.tvUserEmail.visibility = View.GONE
+            binding.ivProfileAvatar.alpha = 0.5f
+        } else {
+            binding.tvUserName.text = sessionManager.getUserFullName() ?: "User"
+            binding.tvUserEmail.text = sessionManager.getUserEmail() ?: ""
+            binding.tvUserEmail.visibility = View.VISIBLE
+            binding.ivProfileAvatar.alpha = 1.0f
+        }
+    }
+
     private fun setupLogout() {
         binding.btnLogout.visibility = View.VISIBLE
+        binding.btnLogout.text = getString(R.string.label_logout)
         // Logout button logic
         binding.btnLogout.setOnClickListener {
             signOutAndNavigate()
@@ -73,7 +87,7 @@ class ProfileFragment : Fragment() {
         // 1. Sign out from Google to allow account switching
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
         val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-        googleSignInClient.signOut().addOnCompleteListener { 
+        googleSignInClient.signOut().addOnCompleteListener {
             // 2. Clear local session using the ViewModel
             viewModel.logout {
                 // 3. Navigate back to the login screen, clearing the back stack

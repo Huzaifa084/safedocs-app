@@ -104,7 +104,8 @@ class LoginFragment : Fragment() {
 
         // Guest entry: allow browsing the app without authentication
         binding.btnSkip.setOnClickListener {
-            // Do not set any token; guest mode is implied by missing token
+            // Explicitly clear any stale session to ensure true guest mode
+            sessionManager.endSession()
             findNavController().navigate(R.id.action_login_to_main_flow)
         }
     }

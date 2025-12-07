@@ -12,24 +12,43 @@ object GuestUiController {
     /**
      * Binds a guest banner's visibility and button to global auth state.
      * Shows banner when in guest mode and hides it after login.
+     *
+     * @param titleResId Optional resource ID for the title text.
+     * @param subtitleResId Optional resource ID for the subtitle text.
+     * @param iconResId Optional resource ID for the icon drawable.
      */
     fun bind(
         fragment: Fragment,
         lifecycleOwner: LifecycleOwner,
         bannerView: View,
         signInButton: View,
-        promptMessage: String,
+        titleResId: Int? = null,
+        subtitleResId: Int? = null,
+        iconResId: Int? = null,
         onAuthenticated: () -> Unit
     ) {
         val context = fragment.requireContext()
         val sessionManager = SessionManager(context)
+
+        // customize banner content if resources are provided
+        if (titleResId != null) {
+            bannerView.findViewById<android.widget.TextView>(org.devaxiom.safedocs.R.id.tvTitle)?.setText(titleResId)
+        }
+        if (subtitleResId != null) {
+            bannerView.findViewById<android.widget.TextView>(org.devaxiom.safedocs.R.id.tvSubtitle)?.setText(subtitleResId)
+        }
+        if (iconResId != null) {
+            bannerView.findViewById<android.widget.ImageView>(org.devaxiom.safedocs.R.id.ivIcon)?.setImageResource(iconResId)
+        }
 
         // Initialize observable state and set initial visibility
         AuthState.init(context)
         bannerView.visibility = if (sessionManager.isGuest()) View.VISIBLE else View.GONE
 
         signInButton.setOnClickListener {
-            LoginPrompt.show(fragment.parentFragmentManager, promptMessage)
+            // Trigger the bottom sheet prompt, using title as the prompt message if available
+            val promptMsg = if (subtitleResId != null) context.getString(subtitleResId) else "Sign in to continue"
+            LoginPrompt.show(fragment.parentFragmentManager, promptMsg)
         }
 
         // Global unauthenticated events

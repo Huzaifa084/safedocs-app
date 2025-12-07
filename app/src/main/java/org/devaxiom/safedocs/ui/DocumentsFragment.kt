@@ -44,22 +44,24 @@ class DocumentsFragment : Fragment() {
 
         // Centralized guest banner behavior
         val sessionManager = SessionManager(requireContext())
-            GuestUiController.bind(
+        GuestUiController.bind(
             fragment = this,
             lifecycleOwner = viewLifecycleOwner,
             bannerView = binding.guestNudge.root,
             signInButton = binding.guestNudge.btnGoogle,
-            promptMessage = getString(R.string.guest_prompt_message),
+            titleResId = R.string.guest_documents_title,
+            subtitleResId = R.string.guest_documents_subtitle,
+            iconResId = R.drawable.ic_nav_documents,
             onAuthenticated = {
                 binding.swipeRefresh.isRefreshing = true
                 viewModel.fetchDocuments("PERSONAL")
             }
         )
 
-            PostLoginRefresher.bind(this, viewLifecycleOwner) {
-                binding.swipeRefresh.isRefreshing = true
-                viewModel.fetchDocuments("PERSONAL")
-            }
+        PostLoginRefresher.bind(this, viewLifecycleOwner) {
+            binding.swipeRefresh.isRefreshing = true
+            viewModel.fetchDocuments("PERSONAL")
+        }
 
         binding.btnUpload.setOnClickListener {
             // Use direct navigation to avoid Safe Args issues
@@ -104,7 +106,13 @@ class DocumentsFragment : Fragment() {
 
         fun refreshWithFilters() {
             binding.swipeRefresh.isRefreshing = true
-            viewModel.fetchDocuments("PERSONAL", currentSearch, currentCategory, expiryFrom, expiryTo)
+            viewModel.fetchDocuments(
+                "PERSONAL",
+                currentSearch,
+                currentCategory,
+                expiryFrom,
+                expiryTo
+            )
         }
 
         // Initial load

@@ -42,6 +42,26 @@ class UploadFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Handle guest mode: show nudge if guest, else show form
+        org.devaxiom.safedocs.ui.guest.GuestUiController.bind(
+            fragment = this,
+            lifecycleOwner = viewLifecycleOwner,
+            bannerView = binding.guestNudge.root,
+            signInButton = binding.guestNudge.btnGoogle,
+            titleResId = org.devaxiom.safedocs.R.string.guest_upload_title,
+            subtitleResId = org.devaxiom.safedocs.R.string.guest_upload_subtitle,
+            iconResId = org.devaxiom.safedocs.R.drawable.ic_upload
+        ) {
+            // On successful login, the GuestUiController hides the banner.
+            // We just need to ensure the form is visible.
+            binding.uploadFormGroup.isVisible = true
+        }
+
+        // Initially hide form if guest (GuestUiController shows banner)
+        val sessionManager = org.devaxiom.safedocs.data.security.SessionManager(requireContext())
+        binding.uploadFormGroup.isVisible = !sessionManager.isGuest()
+
         setupListeners()
         observeViewModel()
     }

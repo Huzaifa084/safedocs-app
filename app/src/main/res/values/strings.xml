@@ -45,8 +45,28 @@
     <string name="login_register">Create your account</string>
     <string name="login_continue_as_guest">Continue as guest</string>
     <string name="guest_prompt_message">Create your free account to unlock syncing, sharing, and backups.</string>
+    
+    <!-- Guest Mode Nudges -->
+    <string name="guest_nudge_cta">Create free account</string>
+    
+    <!-- Default Fallback -->
     <string name="guest_nudge_title">Create an Account to Get Started</string>
     <string name="guest_nudge_subtitle">Sign up to securely save, sync, and access your documents anywhere.</string>
-    <string name="guest_nudge_cta">Create free account</string>
+
+    <!-- Guest Tab Specifics -->
+    <string name="guest_documents_title">Your Digital Vault</string>
+    <string name="guest_documents_subtitle">Securely store your vital personal documents. Never lose a birth certificate or insurance policy again.</string>
+
+    <string name="guest_family_title">Family Safety Net</string>
+    <string name="guest_family_subtitle">Create a family circle to share emergency contacts, medical records, and legal docs instantly.</string>
+
+    <string name="guest_shared_title">Secure Sharing</string>
+    <string name="guest_shared_subtitle">Exchange sensitive files with accountants or lawyers without using insecure email attachments.</string>
+
+    <string name="guest_profile_title">Your SafeDocs Identity</string>
+    <string name="guest_profile_subtitle">Manage your security settings, family roles, and account preferences.</string>
+
+    <string name="guest_upload_title">Secure Document Upload</string>
+    <string name="guest_upload_subtitle">Upload essential documents to your secure cloud storage. Access them anytime, anywhere.</string>
 
 </resources>

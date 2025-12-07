@@ -59,7 +59,10 @@ class SharedByMeFragment : Fragment() {
         }
 
         // Refresh after login from bottom sheet
-        parentFragmentManager.setFragmentResultListener("login_success", viewLifecycleOwner) { _, _ ->
+        parentFragmentManager.setFragmentResultListener(
+            "login_success",
+            viewLifecycleOwner
+        ) { _, _ ->
             binding.swipeRefreshSharedByMe.isRefreshing = true
             viewModel.fetchSharedByMeDocuments()
         }
