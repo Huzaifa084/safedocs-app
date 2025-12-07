@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import org.devaxiom.safedocs.databinding.FragmentUploadBinding
+import org.devaxiom.safedocs.ui.auth.LoginBottomSheetFragment
 
 class UploadFragment : Fragment() {
 
@@ -79,6 +80,14 @@ class UploadFragment : Fragment() {
                     binding.btnUpload.isEnabled = true
                     Toast.makeText(context, "Upload failed: ${state.message}", Toast.LENGTH_LONG)
                         .show()
+                }
+
+                is UploadState.RequireAuth -> {
+                    binding.progressBar.isVisible = false
+                    binding.btnUpload.isEnabled = true
+                    // Show a reusable bottom sheet to prompt sign-in
+                    LoginBottomSheetFragment.newInstance(message = state.message)
+                        .show(parentFragmentManager, "LoginBottomSheet")
                 }
             }
         }

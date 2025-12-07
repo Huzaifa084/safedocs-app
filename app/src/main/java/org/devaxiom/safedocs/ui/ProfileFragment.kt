@@ -38,9 +38,18 @@ class ProfileFragment : Fragment() {
         binding.tvUserName.text = sessionManager.getUserFullName() ?: "User"
         binding.tvUserEmail.text = sessionManager.getUserEmail() ?: "No email found"
 
-        // Logout button logic
-        binding.btnLogout.setOnClickListener {
-            signOutAndNavigate()
+        // Show logout only for authenticated users; otherwise tease sign-in
+        if (sessionManager.isGuest()) {
+            binding.btnLogout.text = getString(R.string.action_sign_in)
+            binding.btnLogout.setIconResource(R.drawable.ic_google_logo)
+            binding.btnLogout.setOnClickListener {
+                findNavController().navigate(R.id.action_profile_to_login)
+            }
+        } else {
+            // Logout button logic
+            binding.btnLogout.setOnClickListener {
+                signOutAndNavigate()
+            }
         }
     }
 

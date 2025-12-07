@@ -53,6 +53,12 @@ class LoginBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Optional custom message
+        val message = arguments?.getString(ARG_MESSAGE)
+        if (!message.isNullOrEmpty()) {
+            binding.tvSubtitle.text = message
+        }
+
         binding.btnGoogle.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_server_client_id))
@@ -66,5 +72,16 @@ class LoginBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    companion object {
+        private const val ARG_MESSAGE = "arg_message"
+
+        fun newInstance(message: String? = null): LoginBottomSheetFragment {
+            val fragment = LoginBottomSheetFragment()
+            val args = Bundle()
+            if (message != null) args.putString(ARG_MESSAGE, message)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

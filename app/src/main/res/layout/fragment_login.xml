@@ -88,12 +88,26 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="12dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:text="Continue with Google"
         app:icon="@drawable/ic_google_logo" 
         app:iconPadding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btnSkip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Skip Login Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSkip"
+        style="@style/Widget.SafeDocs.Button.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="48dp"
+        android:text="@string/login_continue_as_guest"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

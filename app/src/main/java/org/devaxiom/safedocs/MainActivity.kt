@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import org.devaxiom.safedocs.databinding.ActivityMainBinding
+import org.devaxiom.safedocs.data.security.SessionManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +27,11 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.setStartDestination(R.id.documentsFragment)
+
+        // Decide start destination: login first, unless already authenticated
+        val sessionManager = SessionManager(this)
+        val startDest = if (sessionManager.isGuest()) R.id.loginFragment else R.id.documentsFragment
+        navGraph.setStartDestination(startDest)
         navController.graph = navGraph
 
         val appBarConfiguration = AppBarConfiguration(

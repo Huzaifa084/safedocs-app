@@ -8,10 +8,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.devaxiom.safedocs.data.DocumentRepository
+import org.devaxiom.safedocs.data.security.SessionManager
 
 class UploadViewModel(application: Application) : AndroidViewModel(application) {
 
     private val documentRepository = DocumentRepository(application)
+    private val sessionManager = SessionManager(application)
 
     private val _uploadState = MutableLiveData<UploadState>()
     val uploadState: LiveData<UploadState> = _uploadState
@@ -23,6 +25,11 @@ class UploadViewModel(application: Application) : AndroidViewModel(application) 
         shareWith: String?,
         fileUri: Uri
     ) {
+        // Gate protected action: require authentication
+        if (sessionManager.isGuest()) {
+            _uploadState.value = UploadState.RequireAuth("Please sign in to upload documents.")
+            return
+        }
         _uploadState.value = UploadState.Loading
         viewModelScope.launch {
             try {
@@ -44,4 +51,5 @@ sealed class UploadState {
     object Loading : UploadState()
     object Success : UploadState()
     data class Error(val message: String) : UploadState()
+    data class RequireAuth(val message: String) : UploadState()
 }

@@ -15,13 +15,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import org.devaxiom.safedocs.R
 import org.devaxiom.safedocs.auth.AuthViewModel
+import org.devaxiom.safedocs.data.security.SessionManager
 import org.devaxiom.safedocs.databinding.FragmentLoginBinding
+import org.devaxiom.safedocs.ui.auth.LoginBottomSheetFragment
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel: AuthViewModel by viewModels()
+    private lateinit var sessionManager: SessionManager
 
     private val googleSignInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -60,6 +63,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        sessionManager = SessionManager(requireContext())
         return binding.root
     }
 
@@ -74,6 +78,12 @@ class LoginFragment : Fragment() {
             val client = GoogleSignIn.getClient(requireContext(), gso)
             val intent = client.signInIntent
             googleSignInLauncher.launch(intent)
+        }
+
+        // Guest entry: allow browsing the app without authentication
+        binding.btnSkip.setOnClickListener {
+            // Do not set any token; guest mode is implied by missing token
+            findNavController().navigate(R.id.action_login_to_main_flow)
         }
     }
 

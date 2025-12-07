@@ -30,6 +30,7 @@
     <string name="label_ok">OK</string>
     <string name="label_save">Save</string>
     <string name="label_logout">Logout</string>
+    <string name="action_sign_in">Sign in</string>
 
     <!-- Empty State Messages -->
     <string name="empty_state_no_documents">No documents yet. Start by uploading one!</string>
@@ -37,10 +38,11 @@
     <string name="empty_state_no_family">No family members added.</string>
 
     <!-- Login Screen -->
-    <string name="login_title">Welcome to SafeDocs</string>
+    <string name="login_title">Secure Your Digital Life</string>
     <string name="login_email_hint">Email Address</string>
     <string name="login_password_hint">Password</string>
-    <string name="login_button">Login</string>
-    <string name="login_register">Don\'t have an account? Register</string>
+    <string name="login_button">Continue with Google</string>
+    <string name="login_register">Create your account</string>
+    <string name="login_continue_as_guest">Continue as guest</string>
 
 </resources>
