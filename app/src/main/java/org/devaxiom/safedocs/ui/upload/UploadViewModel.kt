@@ -37,7 +37,11 @@ class UploadViewModel(application: Application) : AndroidViewModel(application) 
                 if (response.isSuccessful && response.body()?.success == true) {
                     _uploadState.postValue(UploadState.Success)
                 } else {
-                    val errorMessage = response.body()?.message ?: response.errorBody()?.string() ?: "Upload failed"
+                    val errorMessage = if (response.code() == 413) {
+                        "File too large. Please upload a file smaller than 2MB."
+                    } else {
+                        response.body()?.message ?: response.errorBody()?.string() ?: "Upload failed"
+                    }
                     _uploadState.postValue(UploadState.Error(errorMessage))
                 }
             } catch (e: Exception) {

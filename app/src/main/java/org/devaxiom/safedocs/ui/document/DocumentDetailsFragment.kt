@@ -1,5 +1,6 @@
 package org.devaxiom.safedocs.ui.document
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import org.devaxiom.safedocs.R
 import org.devaxiom.safedocs.databinding.FragmentDocumentDetailsBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -30,6 +32,7 @@ class DocumentDetailsFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -77,8 +80,30 @@ class DocumentDetailsFragment : Fragment() {
             viewModel.document.value?.let { doc -> viewModel.downloadDocument(doc) }
         }
 
+        binding.btnEdit.setOnClickListener {
+            // Navigate to Edit Screen
+            val bundle = android.os.Bundle().apply { putString("documentId", documentId) }
+            findNavController().navigate(R.id.action_details_to_edit, bundle)
+        }
+
         binding.btnDelete.setOnClickListener {
-            // TODO: Implement delete confirmation dialog
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Delete Document?")
+                .setMessage("Are you sure you want to delete this document? This action cannot be undone.")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Delete") { _, _ ->
+                    viewModel.deleteDocument(documentId) { success, message ->
+                        activity?.runOnUiThread {
+                            if (success) {
+                                Toast.makeText(context, "Document deleted", Toast.LENGTH_SHORT).show()
+                                findNavController().popBackStack()
+                            } else {
+                                Toast.makeText(context, message ?: "Delete failed", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }
+                .show()
         }
 
         binding.btnAddShare.setOnClickListener {

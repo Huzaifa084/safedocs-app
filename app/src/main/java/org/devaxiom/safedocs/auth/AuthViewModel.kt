@@ -44,6 +44,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         // Clear local session
         tokenManager.clearToken()
         userManager.clearUser()
+        sessionManager.endSession()
         AuthState.setGuest()
         onSuccess()
     }

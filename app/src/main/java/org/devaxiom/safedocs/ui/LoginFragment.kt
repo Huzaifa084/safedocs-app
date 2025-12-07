@@ -92,6 +92,12 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Check for existing session
+        if (!sessionManager.isGuest()) {
+            findNavController().navigate(R.id.action_login_to_main_flow)
+            return
+        }
+
         binding.btnGoogle.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_server_client_id))

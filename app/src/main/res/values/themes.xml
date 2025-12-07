@@ -100,8 +100,8 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <style name="TextStyle.SafeDocs" parent="TextStyle.SafeDocs.Body"/>
-    <style name="TextStyle" parent="TextStyle.SafeDocs"/>
+    <style name="TextStyle.SafeDocs"/>
+    <style name="TextStyle"/>
 
     <!-- Chip Style (Tonal) -->
     <style name="Widget.SafeDocs.Chip" parent="Widget.Material3.Chip.Assist">

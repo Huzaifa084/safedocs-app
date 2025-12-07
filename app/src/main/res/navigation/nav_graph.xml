@@ -66,6 +66,18 @@
         <argument
             android:name="documentId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_details_to_edit"
+            app:destination="@id/editDocumentFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editDocumentFragment"
+        android:name="org.devaxiom.safedocs.ui.document.EditDocumentFragment"
+        android:label="Edit Document">
+        <argument
+            android:name="documentId"
+            app:argType="string" />
     </fragment>
 
 </navigation>
