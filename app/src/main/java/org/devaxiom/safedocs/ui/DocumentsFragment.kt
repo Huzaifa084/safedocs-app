@@ -93,10 +93,25 @@ class DocumentsFragment : Fragment() {
             viewModel.fetchDocuments("PERSONAL")
         }
 
+        // Search & Filter UI
+        binding.recyclerDocuments.setPadding(16, 16, 16, 16)
+        // TODO: Add a top app bar search and filter actions wired to below
+
+        // Example hooks (values to be set from UI once added):
+        var currentSearch: String? = null
+        var currentCategory: String? = null
+        var expiryFrom: String? = null
+        var expiryTo: String? = null
+
+        fun refreshWithFilters() {
+            binding.swipeRefresh.isRefreshing = true
+            viewModel.fetchDocuments("PERSONAL", currentSearch, currentCategory, expiryFrom, expiryTo)
+        }
+
         // Initial load
         binding.swipeRefresh.isRefreshing = true
         if (!sessionManager.isGuest()) {
-            viewModel.fetchDocuments("PERSONAL")
+            refreshWithFilters()
         } else {
             binding.swipeRefresh.isRefreshing = false
             // Keep list empty for guests and encourage sign-in via banner

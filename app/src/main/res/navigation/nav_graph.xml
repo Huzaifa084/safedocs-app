@@ -68,4 +68,9 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/familyMembersFragment"
+        android:name="org.devaxiom.safedocs.ui.family.FamilyMembersFragment"
+        android:label="Family Members" />
+
 </navigation>

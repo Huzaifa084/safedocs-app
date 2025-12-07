@@ -30,6 +30,22 @@ class DocumentRepository(private val context: Context) {
 
     suspend fun downloadDocument(documentId: String) = ApiClient.instance.downloadDocument(documentId)
 
+    suspend fun updateDocument(
+        documentId: String,
+        title: String? = null,
+        category: String? = null,
+        expiryDate: String? = null,
+        shareWith: String? = null,
+        fileUri: Uri? = null
+    ) = ApiClient.instance.updateDocument(
+        documentId,
+        title,
+        category,
+        expiryDate,
+        shareWith,
+        fileUri?.let { prepareFilePart(it) }
+    )
+
     suspend fun uploadDocument(
         title: String,
         category: String,
@@ -45,6 +61,10 @@ class DocumentRepository(private val context: Context) {
     )
 
     suspend fun shareDocument(documentId: String, email: String) = ApiClient.instance.shareDocument(documentId, ShareRequest(email))
+
+    suspend fun getDocumentShares(documentId: String) = ApiClient.instance.getDocumentShares(documentId)
+
+    suspend fun unshareDocument(documentId: String, shareId: String) = ApiClient.instance.unshareDocument(documentId, shareId)
 
     private fun prepareFilePart(fileUri: Uri): MultipartBody.Part {
         var fileName = "uploaded_file"

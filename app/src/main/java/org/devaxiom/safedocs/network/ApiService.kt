@@ -39,8 +39,16 @@ interface ApiService {
         @Part file: MultipartBody.Part
     ): Response<ApiResponse<UploadResponse>>
 
+    @Multipart
     @PUT("/api/documents/{id}")
-    suspend fun updateDocument(@Path("id") documentId: String, @Body document: Document): Response<ApiResponse<Document>>
+    suspend fun updateDocument(
+        @Path("id") documentId: String,
+        @Query("title") title: String? = null,
+        @Query("category") category: String? = null,
+        @Query("expiryDate") expiryDate: String? = null,
+        @Query("shareWith") shareWith: String? = null,
+        @Part file: MultipartBody.Part? = null
+    ): Response<ApiResponse<Document>>
 
     @DELETE("/api/documents/{id}")
     suspend fun deleteDocument(@Path("id") documentId: String): Response<ApiResponse<Void>>
@@ -52,11 +60,35 @@ interface ApiService {
     @DELETE("/api/documents/{id}/share/{shareId}")
     suspend fun unshareDocument(@Path("id") documentId: String, @Path("shareId") shareId: String): Response<ApiResponse<Void>>
 
+    @GET("/api/documents/{id}/share")
+    suspend fun getDocumentShares(@Path("id") documentId: String): Response<ApiResponse<List<DocumentShare>>>
+
     // ========== Downloading ========== //
     @GET("/api/documents/{id}/download")
     @Streaming // Important for large files
     suspend fun downloadDocument(@Path("id") documentId: String): Response<ResponseBody>
+
+    // ========== Family ========== //
+    @GET("/api/family/members")
+    suspend fun getFamilyMembers(): Response<ApiResponse<List<UserDto>>>
+
+    @POST("/api/family/invite")
+    suspend fun inviteFamily(@Query("email") email: String): Response<ApiResponse<Void>>
+
+    @DELETE("/api/family/members/{userId}")
+    suspend fun removeFamilyMember(@Path("userId") userId: String): Response<ApiResponse<Void>>
 }
 
 // Placeholder for a future share request data class
 data class ShareRequest(val email: String)
+data class DocumentShare(
+    val id: String,
+    val email: String,
+    val canEdit: Boolean? = null
+)
+
+data class UserDto(
+    val id: String,
+    val name: String?,
+    val email: String?
+)
