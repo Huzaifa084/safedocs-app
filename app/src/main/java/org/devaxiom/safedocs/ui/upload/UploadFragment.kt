@@ -20,6 +20,7 @@ class UploadFragment : Fragment() {
     private var _binding: FragmentUploadBinding? = null
     private val binding get() = _binding!!
     private val viewModel: UploadViewModel by viewModels()
+    private var currentFamilies: List<org.devaxiom.safedocs.data.model.FamilySummary> = emptyList()
 
     private var selectedFileUri: Uri? = null
 
@@ -64,7 +65,7 @@ class UploadFragment : Fragment() {
 
         setupListeners()
         observeViewModel()
-        
+
         if (!sessionManager.isGuest()) {
             viewModel.fetchFamilies()
         }
@@ -74,7 +75,26 @@ class UploadFragment : Fragment() {
         binding.rgVisibility.setOnCheckedChangeListener { _, checkedId ->
             binding.tilShareWith.isVisible = (checkedId == org.devaxiom.safedocs.R.id.rbShared)
             binding.spinnerFamily.isVisible = (checkedId == org.devaxiom.safedocs.R.id.rbFamily)
+
+            // Re-validate role if Family is selected/deselected
+            validateFamilyRole()
         }
+
+        binding.spinnerFamily.onItemSelectedListener =
+            object : android.widget.AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: android.widget.AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    validateFamilyRole()
+                }
+
+                override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {
+                    validateFamilyRole()
+                }
+            }
 
         binding.btnSelectFile.setOnClickListener {
             filePickerLauncher.launch("*/*")
@@ -87,6 +107,7 @@ class UploadFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.families.observe(viewLifecycleOwner) { families ->
+            currentFamilies = families
             val adapter = android.widget.ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -94,10 +115,11 @@ class UploadFragment : Fragment() {
             )
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinnerFamily.adapter = adapter
-            // Tagging the binding to store data or keeping reference is tricky with anonymous classes
-            // Better to store in a map or reference via position index matching list index
+
+            // Validate initial selection
+            validateFamilyRole()
         }
-        
+
         viewModel.uploadState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UploadState.Loading -> {
@@ -129,30 +151,61 @@ class UploadFragment : Fragment() {
         }
     }
 
+    private fun validateFamilyRole() {
+        val isFamily =
+            (binding.rgVisibility.checkedRadioButtonId == org.devaxiom.safedocs.R.id.rbFamily)
+        if (!isFamily) {
+            binding.tvRoleWarning.isVisible = false
+            binding.btnUpload.isEnabled = true
+            return
+        }
+
+        val position = binding.spinnerFamily.selectedItemPosition
+        if (position >= 0 && position < currentFamilies.size) {
+            val family = currentFamilies[position]
+            if (family.role != "HEAD") {
+                binding.tvRoleWarning.isVisible = true
+                binding.btnUpload.isEnabled = false
+            } else {
+                binding.tvRoleWarning.isVisible = false
+                binding.btnUpload.isEnabled = true
+            }
+        } else {
+            // No family selected or available
+            // Maybe disable upload? Or assume safe.
+            binding.tvRoleWarning.isVisible = false
+            binding.btnUpload.isEnabled = true // Let validation catch "Select Family"
+        }
+    }
+
     private fun handleUpload() {
+        if (!binding.btnUpload.isEnabled) {
+            Toast.makeText(context, "You cannot upload to this family.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val title = binding.etTitle.text.toString().trim()
         val category = binding.etCategory.text.toString().trim()
-        
-        val visibility = when(binding.rgVisibility.checkedRadioButtonId) {
+
+        val visibility = when (binding.rgVisibility.checkedRadioButtonId) {
             org.devaxiom.safedocs.R.id.rbFamily -> "FAMILY"
             org.devaxiom.safedocs.R.id.rbShared -> "SHARED"
-            else -> "PERSONAL" 
+            else -> "PERSONAL"
         }
 
         val shareWith = if (visibility == "SHARED") {
             binding.etShareWith.text.toString().trim().takeIf { it.isNotEmpty() }
         } else null
-        
+
         var familyId: String? = null
         if (visibility == "FAMILY") {
-            val families = viewModel.families.value
             val position = binding.spinnerFamily.selectedItemPosition
-            if (families != null && position >= 0 && position < families.size) {
-                familyId = families[position].id
+            if (currentFamilies.isNotEmpty() && position >= 0 && position < currentFamilies.size) {
+                familyId = currentFamilies[position].id
             }
             if (familyId == null) {
-                 Toast.makeText(context, "Please select a family", Toast.LENGTH_SHORT).show()
-                 return
+                Toast.makeText(context, "Please select a family", Toast.LENGTH_SHORT).show()
+                return
             }
         }
 

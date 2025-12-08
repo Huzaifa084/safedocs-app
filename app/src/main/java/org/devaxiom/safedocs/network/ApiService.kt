@@ -15,7 +15,7 @@ interface ApiService {
     // ========== Document List & Search ========== //
     @GET("/api/documents")
     suspend fun getDocuments(
-        @Query("type") type: String,
+        @Query("type") visibility: String,
         @Query("search") search: String? = null,
         @Query("category") category: String? = null,
         @Query("expiryFrom") expiryFrom: String? = null,
@@ -84,19 +84,25 @@ interface ApiService {
     suspend fun renameFamily(@Path("id") familyId: String, @Body request: RenameFamilyRequest): Response<ApiResponse<FamilyProfile>>
 
     @POST("/api/family/{id}/invite")
-    suspend fun inviteFamilyMember(@Path("id") familyId: String, @Body request: InviteFamilyRequest): Response<ApiResponse<FamilyInvitation>>
-
-    @POST("/api/family/invite/{inviteId}/accept")
-    suspend fun acceptFamilyInvite(@Path("inviteId") inviteId: String): Response<ApiResponse<Void>>
-
-    @POST("/api/family/invite/{inviteId}/reject")
-    suspend fun rejectFamilyInvite(@Path("inviteId") inviteId: String): Response<ApiResponse<Void>>
+    suspend fun inviteFamilyMember(@Path("id") familyId: String, @Body request: InviteFamilyRequest): Response<ApiResponse<Void>>
 
     @DELETE("/api/family/{id}/members/{userId}")
     suspend fun removeFamilyMember(@Path("id") familyId: String, @Path("userId") userId: String): Response<ApiResponse<Void>>
 
     @POST("/api/family/{id}/leave")
     suspend fun leaveFamily(@Path("id") familyId: String): Response<ApiResponse<Void>>
+
+    // ========== Invitations ========== //
+    @GET("/api/family/invites") // Assumption: Endpoint to list pending invites
+    suspend fun getInvitations(): Response<ApiResponse<List<FamilyInvitation>>>
+
+    @POST("/api/family/invite/{inviteId}/accept")
+    suspend fun acceptInvite(@Path("inviteId") inviteId: String): Response<ApiResponse<Void>>
+
+    @POST("/api/family/invite/{inviteId}/reject")
+    suspend fun rejectInvite(@Path("inviteId") inviteId: String): Response<ApiResponse<Void>>
+
+
 }
 
 // Placeholder for a future share request data class

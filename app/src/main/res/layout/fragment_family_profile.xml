@@ -97,28 +97,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#F5F5F5"
-        android:elevation="8dp"
+        android:padding="24dp"
+        android:background="?attr/colorSurface"
+        android:elevation="16dp"
+        android:outlineProvider="bounds"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnInviteMember"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.SafeDocs.Button.Primary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:text="Invite New Member"
             android:visibility="gone" 
             app:icon="@drawable/ic_add"
-            android:layout_marginBottom="8dp"/>
+            app:iconGravity="textStart"
+            android:layout_marginBottom="12dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLeaveFamily"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.SafeDocs.Button.Destructive"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Leave Family"
-            android:textColor="@android:color/holo_red_dark" />
+            android:layout_height="56dp"
+            android:text="Leave Family" />
     </LinearLayout>
 
     <ProgressBar

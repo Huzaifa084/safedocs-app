@@ -22,11 +22,12 @@ class DocumentViewModel(application: Application) : AndroidViewModel(application
     val error: LiveData<String> = _error
 
     fun fetchDocuments(
-        type: String,
+        visibility: String, // Changed from type
         search: String? = null,
         category: String? = null,
         expiryFrom: String? = null,
-        expiryTo: String? = null
+        expiryTo: String? = null,
+        familyId: String? = null // Added familyId
     ) {
         viewModelScope.launch {
             // Global guest gating: do not hit APIs, clear errors, show empty state
@@ -37,7 +38,7 @@ class DocumentViewModel(application: Application) : AndroidViewModel(application
                 return@launch
             }
             try {
-                val response = documentRepository.getDocuments(type, search, category, expiryFrom, expiryTo)
+                val response = documentRepository.getDocuments(visibility, search, category, expiryFrom, expiryTo, familyId)
                 if (response.isSuccessful && response.body()?.success == true) {
                     _documents.postValue(response.body()?.data?.items ?: emptyList())
                 } else {

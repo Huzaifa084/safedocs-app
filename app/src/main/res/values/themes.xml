@@ -123,4 +123,10 @@
             <item name="chipMinHeight">24dp</item>
         </style>
 
+    <!-- Choice Chip Style -->
+    <style name="Widget.SafeDocs.Chip.Choice" parent="Widget.Material3.Chip.Filter">
+        <item name="android:textColor">?attr/colorOnSecondaryContainer</item>
+        <item name="chipBackgroundColor">?attr/colorSecondaryContainer</item>
+    </style>
+
 </resources>

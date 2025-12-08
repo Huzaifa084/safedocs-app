@@ -31,7 +31,7 @@ class SessionManager(context: Context) {
             .putString(AUTH_TOKEN, token)
             .putString(USER_EMAIL, user.email)
             .putString(USER_FULL_NAME, user.fullName)
-            .putString(USER_ID, user.id)
+            .putString(USER_ID, user.publicId)
             .apply()
     }
 

@@ -21,11 +21,14 @@ class FamilyRepository {
     suspend fun inviteFamilyMember(familyId: String, email: String) = 
         ApiClient.instance.inviteFamilyMember(familyId, InviteFamilyRequest(email))
 
+    suspend fun getInvitations() =
+        ApiClient.instance.getInvitations()
+
     suspend fun acceptFamilyInvite(inviteId: String) = 
-        ApiClient.instance.acceptFamilyInvite(inviteId)
+        ApiClient.instance.acceptInvite(inviteId)
 
     suspend fun rejectFamilyInvite(inviteId: String) = 
-        ApiClient.instance.rejectFamilyInvite(inviteId)
+        ApiClient.instance.rejectInvite(inviteId)
 
     suspend fun removeFamilyMember(familyId: String, userId: String) = 
         ApiClient.instance.removeFamilyMember(familyId, userId)

@@ -1,5 +1,6 @@
 package org.devaxiom.safedocs.ui.family
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +37,7 @@ class FamilyProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         currentFamilyId = arguments?.getString("familyId")
         if (currentFamilyId == null) {
             findNavController().popBackStack()
@@ -51,7 +52,7 @@ class FamilyProfileFragment : Fragment() {
         observeViewModel()
 
         viewModel.getFamilyProfile(currentFamilyId!!)
-        
+
         // Removed manual toolbar handling, relying on MainActivity setup
     }
 
@@ -60,7 +61,7 @@ class FamilyProfileFragment : Fragment() {
             // Handle member click if needed (e.g. remove member if HEAD)
             val isHead = viewModel.familyProfile.value?.headUserId == currentUserId
             if (isHead && member.userId != currentUserId) {
-                 showRemoveMemberDialog(member.userId, member.name ?: "Member")
+                showRemoveMemberDialog(member.userId, member.name ?: "Member")
             }
         }
         binding.recyclerFamilyMembers.apply {
@@ -68,87 +69,121 @@ class FamilyProfileFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
-    
+
     private fun setupListeners() {
         binding.btnInviteMember.setOnClickListener {
-             showInviteDialog()
+            showInviteDialog()
         }
-        
+
         binding.btnLeaveFamily.setOnClickListener {
-             showLeaveDialog()
+            showLeaveDialog()
+        }
+
+        binding.btnEditFamilyName.setOnClickListener {
+            val currentName = binding.tvProfileName.text.toString()
+            showRenameDialog(currentName)
         }
     }
 
-    private fun observeViewModel() {
-        viewModel.familyProfile.observe(viewLifecycleOwner) { profile ->
-            if (profile != null) {
-                binding.tvProfileName.text = profile.familyName
-                binding.tvProfileHead.text = "Head: ${profile.headName ?: "Unknown"}" // Updated ID
-                
-                memberAdapter.submitList(profile.members)
-                
-                val isHead = profile.headUserId == currentUserId
-                binding.btnInviteMember.isVisible = isHead
-                binding.btnEditFamilyName.isVisible = isHead // New edit button
-                // Head shouldn't see 'Leave' in simple implementation unless last member.
-            }
-        }
-        
-        viewModel.operationState.observe(viewLifecycleOwner) { state ->
-            when(state) {
-                is FamilyOperationState.Loading -> binding.progressBarProfile.isVisible = true
-                is FamilyOperationState.Success -> {
-                    binding.progressBarProfile.isVisible = false
-                    Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
-                    if (state.message == "Left family") {
-                        findNavController().popBackStack()
-                    }
-                }
-                is FamilyOperationState.Error -> {
-                    binding.progressBarProfile.isVisible = false
-                    Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
-                }
-                else -> binding.progressBarProfile.isVisible = false
-            }
-        }
-    }
-    
     private fun showInviteDialog() {
         val input = EditText(requireContext())
         input.hint = "Email Address"
+        val padding = (16 * resources.displayMetrics.density).toInt()
+        input.setPadding(padding, padding, padding, padding)
+
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Invite Member")
             .setView(input)
             .setPositiveButton("Invite") { _, _ ->
                 val email = input.text.toString().trim()
                 if (email.isNotEmpty()) {
-                    viewModel.inviteMember(currentFamilyId!!, email)
+                    currentFamilyId?.let { viewModel.inviteMember(it, email) }
                 }
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
-    
+
+    private fun showRenameDialog(currentName: String) {
+        val input = EditText(requireContext())
+        input.hint = "Family Name"
+        input.setText(currentName)
+        val padding = (16 * resources.displayMetrics.density).toInt()
+        input.setPadding(padding, padding, padding, padding)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Rename Family")
+            .setView(input)
+            .setPositiveButton("Update") { _, _ ->
+                val newName = input.text.toString().trim()
+                if (newName.isNotEmpty()) {
+                    currentFamilyId?.let { viewModel.renameFamily(it, newName) }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showLeaveDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Leave Family")
+            .setMessage("Are you sure you want to leave this family?")
+            .setPositiveButton("Leave") { _, _ ->
+                currentFamilyId?.let { viewModel.leaveFamily(it) }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
     private fun showRemoveMemberDialog(userId: String, name: String) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Remove Member")
             .setMessage("Are you sure you want to remove $name?")
             .setPositiveButton("Remove") { _, _ ->
-                viewModel.removeMember(currentFamilyId!!, userId)
+                currentFamilyId?.let { viewModel.removeMember(it, userId) }
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
-    
-    private fun showLeaveDialog() {
-         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Leave Family")
-            .setMessage("Are you sure? You will lose access to family documents.")
-            .setPositiveButton("Leave") { _, _ ->
-                viewModel.leaveFamily(currentFamilyId!!)
+
+    @SuppressLint("SetTextI18n")
+    private fun observeViewModel() {
+        viewModel.familyProfile.observe(viewLifecycleOwner) { profile ->
+            if (profile != null) {
+                binding.tvProfileName.text = profile.familyName
+                binding.tvProfileHead.text = "Head: ${profile.headName ?: "Unknown"}" // Updated ID
+
+                memberAdapter.submitList(profile.members)
+
+                val isHead = profile.headUserId == currentUserId
+                // Explicitly valid visibility logic
+                binding.btnInviteMember.isVisible = isHead
+                binding.btnEditFamilyName.isVisible = isHead
+
+                // If isHead is true, we expect these buttons to show.
+                // If they don't, either currentUserId is wrong, or layout obscures them.
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+        }
+
+        viewModel.operationState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is FamilyOperationState.Loading -> binding.progressBarProfile.isVisible = true
+                is FamilyOperationState.Success -> {
+                    binding.progressBarProfile.isVisible = false
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                    if (state.message.contains("Left", true)) {
+                        findNavController().popBackStack()
+                    }
+                }
+
+                is FamilyOperationState.Error -> {
+                    binding.progressBarProfile.isVisible = false
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+                }
+
+                else -> binding.progressBarProfile.isVisible = false
+            }
+        }
     }
 
     override fun onDestroyView() {

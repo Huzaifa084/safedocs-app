@@ -27,6 +27,12 @@ class DocumentsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: DocumentViewModel by viewModels()
     private lateinit var documentAdapter: DocumentAdapter
+    
+    // Filter State
+    private var currentSearch: String? = null
+    private var currentCategory: String? = null
+    private var expiryFrom: String? = null
+    private var expiryTo: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,14 +59,12 @@ class DocumentsFragment : Fragment() {
             subtitleResId = R.string.guest_documents_subtitle,
             iconResId = R.drawable.ic_nav_documents,
             onAuthenticated = {
-                binding.swipeRefresh.isRefreshing = true
-                viewModel.fetchDocuments("PERSONAL")
+                refreshWithFilters()
             }
         )
 
         PostLoginRefresher.bind(this, viewLifecycleOwner) {
-            binding.swipeRefresh.isRefreshing = true
-            viewModel.fetchDocuments("PERSONAL")
+            refreshWithFilters()
         }
 
         binding.btnUpload.setOnClickListener {
@@ -91,28 +95,17 @@ class DocumentsFragment : Fragment() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.fetchDocuments("PERSONAL")
+            refreshWithFilters()
         }
 
         // Search & Filter UI
         binding.recyclerDocuments.setPadding(16, 16, 16, 16)
         // TODO: Add a top app bar search and filter actions wired to below
 
-        // Example hooks (values to be set from UI once added):
-        var currentSearch: String? = null
-        var currentCategory: String? = null
-        var expiryFrom: String? = null
-        var expiryTo: String? = null
 
-        fun refreshWithFilters() {
-            binding.swipeRefresh.isRefreshing = true
-            viewModel.fetchDocuments(
-                "PERSONAL",
-                currentSearch,
-                currentCategory,
-                expiryFrom,
-                expiryTo
-            )
+
+        binding.chipGroupInfo.setOnCheckedChangeListener { _, checkedId ->
+            refreshWithFilters()
         }
 
         // Initial load
@@ -131,8 +124,7 @@ class DocumentsFragment : Fragment() {
             viewLifecycleOwner
         ) { _, _ ->
             binding.guestNudge.root.visibility = View.GONE
-            binding.swipeRefresh.isRefreshing = true
-            viewModel.fetchDocuments("PERSONAL")
+            refreshWithFilters()
         }
     }
 
@@ -146,6 +138,25 @@ class DocumentsFragment : Fragment() {
             adapter = documentAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+    }
+
+    private fun refreshWithFilters() {
+        if (_binding == null) return
+        binding.swipeRefresh.isRefreshing = true
+        
+        val visibility = when (binding.chipGroupInfo.checkedChipId) {
+            org.devaxiom.safedocs.R.id.chipFamily -> "FAMILY"
+            org.devaxiom.safedocs.R.id.chipShared -> "SHARED"
+            else -> "PERSONAL"
+        }
+        
+        viewModel.fetchDocuments(
+            visibility = visibility,
+            search = currentSearch,
+            category = currentCategory,
+            expiryFrom = expiryFrom,
+            expiryTo = expiryTo
+        )
     }
 
     override fun onDestroyView() {

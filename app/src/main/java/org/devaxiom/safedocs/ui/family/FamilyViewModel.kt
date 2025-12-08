@@ -138,6 +138,58 @@ class FamilyViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
     }
+
+    private val _invitations = MutableLiveData<List<org.devaxiom.safedocs.data.model.FamilyInvitation>>()
+    val invitations: LiveData<List<org.devaxiom.safedocs.data.model.FamilyInvitation>> = _invitations
+
+    fun fetchInvitations() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getInvitations()
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _invitations.postValue(response.body()?.data ?: emptyList())
+                } else {
+                    // Fail silently or show error?
+                    // _operationState.postValue(FamilyOperationState.Error("Failed to fetch invites"))
+                }
+            } catch (e: Exception) {
+                // Ignore
+            }
+        }
+    }
+
+    fun acceptInvitation(inviteId: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.acceptFamilyInvite(inviteId)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _operationState.postValue(FamilyOperationState.Success("Invitation accepted"))
+                    fetchInvitations()
+                    fetchFamilies()
+                } else {
+                    _operationState.postValue(FamilyOperationState.Error(response.body()?.message ?: "Accept failed"))
+                }
+            } catch (e: Exception) {
+                _operationState.postValue(FamilyOperationState.Error(e.message ?: "Unknown error"))
+            }
+        }
+    }
+
+    fun rejectInvitation(inviteId: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.rejectFamilyInvite(inviteId)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _operationState.postValue(FamilyOperationState.Success("Invitation rejected"))
+                    fetchInvitations()
+                } else {
+                    _operationState.postValue(FamilyOperationState.Error(response.body()?.message ?: "Reject failed"))
+                }
+            } catch (e: Exception) {
+                _operationState.postValue(FamilyOperationState.Error(e.message ?: "Unknown error"))
+            }
+        }
+    }
 }
 
 sealed class FamilyOperationState {

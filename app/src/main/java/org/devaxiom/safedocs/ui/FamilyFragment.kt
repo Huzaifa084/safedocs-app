@@ -70,9 +70,21 @@ class FamilyFragment : Fragment() {
         }
     }
 
+    private lateinit var invitationAdapter: org.devaxiom.safedocs.ui.family.InvitationAdapter
+
     private fun setupRecyclerView() {
+        // Invitations
+        invitationAdapter = org.devaxiom.safedocs.ui.family.InvitationAdapter(
+            onAccept = { id -> viewModel.acceptInvitation(id) },
+            onReject = { id -> viewModel.rejectInvitation(id) }
+        )
+        binding.recyclerInvitations.apply {
+            adapter = invitationAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        // Families
         familyAdapter = FamilyAdapter { family ->
-            // Navigate to Profile
             val bundle = bundleOf("familyId" to family.id)
             findNavController().navigate(R.id.action_family_to_profile, bundle)
         }
@@ -98,15 +110,18 @@ class FamilyFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.families.observe(viewLifecycleOwner) { families ->
-            binding.swipeRefreshFamily.isRefreshing = false
-            if (families.isNullOrEmpty()) {
-                binding.emptyStateLayout.visibility = View.VISIBLE
-                binding.recyclerFamilies.visibility = View.GONE
-            } else {
-                binding.emptyStateLayout.visibility = View.GONE
-                binding.recyclerFamilies.visibility = View.VISIBLE
-                familyAdapter.submitList(families)
-            }
+            updateEmptyState()
+            familyAdapter.submitList(families)
+            binding.recyclerFamilies.isVisible = !families.isNullOrEmpty()
+            binding.tvFamiliesHeader.isVisible = !families.isNullOrEmpty()
+            // If we have invites but no families, show "Your Families" header anyway? No, hide it.
+        }
+        
+        viewModel.invitations.observe(viewLifecycleOwner) { invites ->
+            updateEmptyState()
+            invitationAdapter.submitList(invites)
+            binding.recyclerInvitations.isVisible = !invites.isNullOrEmpty()
+            binding.tvInvitationsHeader.isVisible = !invites.isNullOrEmpty()
         }
 
         viewModel.operationState.observe(viewLifecycleOwner) { state ->
@@ -125,9 +140,23 @@ class FamilyFragment : Fragment() {
         }
     }
     
+    private fun updateEmptyState() {
+        val noFamilies = viewModel.families.value.isNullOrEmpty()
+        val noInvites = viewModel.invitations.value.isNullOrEmpty()
+        
+        binding.swipeRefreshFamily.isRefreshing = false
+        
+        if (noFamilies && noInvites) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
+        } else {
+            binding.emptyStateLayout.visibility = View.GONE
+        }
+    }
+    
     private fun loadFamilies() {
         binding.swipeRefreshFamily.isRefreshing = true
         viewModel.fetchFamilies()
+        viewModel.fetchInvitations()
     }
 
     private fun showCreateFamilyDialog() {

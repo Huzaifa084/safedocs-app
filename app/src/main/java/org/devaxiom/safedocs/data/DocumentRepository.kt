@@ -14,13 +14,13 @@ class DocumentRepository(private val context: Context) {
 
     // ========== Document List & Search ========== //
     suspend fun getDocuments(
-        type: String,
+        visibility: String,
         search: String? = null,
         category: String? = null,
         expiryFrom: String? = null,
         expiryTo: String? = null,
         familyId: String? = null
-    ) = ApiClient.instance.getDocuments(type, search, category, expiryFrom, expiryTo, familyId)
+    ) = ApiClient.instance.getDocuments(visibility, search, category, expiryFrom, expiryTo, familyId)
 
     suspend fun getSharedWithMeDocuments() = ApiClient.instance.getSharedWithMeDocuments()
 

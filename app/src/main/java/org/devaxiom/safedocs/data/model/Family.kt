@@ -30,13 +30,16 @@ data class FamilyMember(
 data class FamilyInvitation(
     @SerializedName("inviteId") val inviteId: String,
     @SerializedName("familyId") val familyId: String,
+    @SerializedName("familyName") val familyName: String?,
     @SerializedName("invitedEmail") val invitedEmail: String,
+    @SerializedName("invitedByName") val invitedByName: String?,
+    @SerializedName("invitedByEmail") val invitedByEmail: String?,
     @SerializedName("status") val status: String, // PENDING, ACCEPTED, REJECTED
     @SerializedName("createdAt") val createdAt: Date? = null
 )
 
 data class CreateFamilyRequest(
-    @SerializedName("familyName") val familyName: String
+    @SerializedName("name") val familyName: String
 )
 
 data class InviteFamilyRequest(
@@ -44,5 +47,5 @@ data class InviteFamilyRequest(
 )
 
 data class RenameFamilyRequest(
-    @SerializedName("familyName") val familyName: String
+    @SerializedName("name") val familyName: String
 )
