@@ -6,10 +6,7 @@
         android:icon="@drawable/ic_document"
         android:title="@string/nav_documents" />
 
-    <item
-        android:id="@+id/sharedWithMeFragment"
-        android:icon="@drawable/ic_shared_folder"
-        android:title="@string/nav_shared_with_me" />
+
 
     <item
         android:id="@+id/familyFragment"

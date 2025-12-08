@@ -40,9 +40,17 @@ class DocumentAdapter(private val onClick: (Document) -> Unit) :
 
             if (document.visibility == "PERSONAL") {
                 binding.chipVisibility.isVisible = false
+                binding.tvFamilyName.isVisible = false
             } else {
                 binding.chipVisibility.isVisible = true
                 binding.chipVisibility.text = document.visibility
+                
+                if (document.visibility == "FAMILY" && !document.familyName.isNullOrEmpty()) {
+                    binding.tvFamilyName.isVisible = true
+                    binding.tvFamilyName.text = document.familyName
+                } else {
+                    binding.tvFamilyName.isVisible = false
+                }
             }
 
             document.expiryDate?.let {

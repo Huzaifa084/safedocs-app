@@ -57,6 +57,21 @@
             app:layout_constraintTop_toBottomOf="@id/tvDocumentCategory"
             app:layout_constraintStart_toStartOf="@id/tvDocumentCategory" />
 
+        <TextView
+            android:id="@+id/tvFamilyName"
+            style="@style/TextStyle.SafeDocs.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Smith Family"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintStart_toEndOf="@id/chipVisibility"
+            app:layout_constraintBottom_toBottomOf="@id/chipVisibility"
+            app:layout_constraintTop_toTopOf="@id/chipVisibility" />
+
         <LinearLayout
             android:id="@+id/llExpiryInfo"
             android:layout_width="wrap_content"
