@@ -2,7 +2,7 @@ package org.devaxiom.safedocs.network
 
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import org.devaxiom.safedocs.data.model.Document
+import org.devaxiom.safedocs.data.model.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -19,7 +19,8 @@ interface ApiService {
         @Query("search") search: String? = null,
         @Query("category") category: String? = null,
         @Query("expiryFrom") expiryFrom: String? = null,
-        @Query("expiryTo") expiryTo: String? = null
+        @Query("expiryTo") expiryTo: String? = null,
+        @Query("familyId") familyId: String? = null
     ): Response<ApiResponse<PaginatedResponse<Document>>>
 
     @GET("/api/documents/shared/with-me")
@@ -36,6 +37,7 @@ interface ApiService {
         @Query("category") category: String,
         @Query("visibility") visibility: String,
         @Query("shareWith") shareWith: String?,
+        @Query("familyId") familyId: String? = null,
         @Part file: MultipartBody.Part
     ): Response<ApiResponse<UploadResponse>>
 
@@ -69,14 +71,32 @@ interface ApiService {
     suspend fun downloadDocument(@Path("id") documentId: String): Response<ResponseBody>
 
     // ========== Family ========== //
-    @GET("/api/family/members")
-    suspend fun getFamilyMembers(): Response<ApiResponse<List<UserDto>>>
+    @GET("/api/family")
+    suspend fun getFamilies(): Response<ApiResponse<List<FamilySummary>>>
 
-    @POST("/api/family/invite")
-    suspend fun inviteFamily(@Query("email") email: String): Response<ApiResponse<Void>>
+    @POST("/api/family")
+    suspend fun createFamily(@Body request: CreateFamilyRequest): Response<ApiResponse<FamilySummary>>
 
-    @DELETE("/api/family/members/{userId}")
-    suspend fun removeFamilyMember(@Path("userId") userId: String): Response<ApiResponse<Void>>
+    @GET("/api/family/{id}")
+    suspend fun getFamilyProfile(@Path("id") familyId: String): Response<ApiResponse<FamilyProfile>>
+
+    @PUT("/api/family/{id}")
+    suspend fun renameFamily(@Path("id") familyId: String, @Body request: RenameFamilyRequest): Response<ApiResponse<FamilyProfile>>
+
+    @POST("/api/family/{id}/invite")
+    suspend fun inviteFamilyMember(@Path("id") familyId: String, @Body request: InviteFamilyRequest): Response<ApiResponse<FamilyInvitation>>
+
+    @POST("/api/family/invite/{inviteId}/accept")
+    suspend fun acceptFamilyInvite(@Path("inviteId") inviteId: String): Response<ApiResponse<Void>>
+
+    @POST("/api/family/invite/{inviteId}/reject")
+    suspend fun rejectFamilyInvite(@Path("inviteId") inviteId: String): Response<ApiResponse<Void>>
+
+    @DELETE("/api/family/{id}/members/{userId}")
+    suspend fun removeFamilyMember(@Path("id") familyId: String, @Path("userId") userId: String): Response<ApiResponse<Void>>
+
+    @POST("/api/family/{id}/leave")
+    suspend fun leaveFamily(@Path("id") familyId: String): Response<ApiResponse<Void>>
 }
 
 // Placeholder for a future share request data class

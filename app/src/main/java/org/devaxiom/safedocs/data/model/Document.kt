@@ -14,5 +14,7 @@ data class Document(
     @SerializedName("storage_filename") val storageFilename: String? = null,
     @SerializedName("storage_mime_type") val storageMimeType: String? = null,
     @SerializedName("created_date") val createdDate: Date? = null,
-    @SerializedName("ownerName") val ownerName: String? = null // Added from API response
+    @SerializedName("ownerName") val ownerName: String? = null,
+    @SerializedName("familyId") val familyId: String? = null,
+    @SerializedName("familyName") val familyName: String? = null
 )

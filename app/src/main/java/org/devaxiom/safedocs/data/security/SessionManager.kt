@@ -23,6 +23,7 @@ class SessionManager(context: Context) {
         private const val AUTH_TOKEN = "AUTH_TOKEN"
         private const val USER_EMAIL = "USER_EMAIL"
         private const val USER_FULL_NAME = "USER_FULL_NAME"
+        private const val USER_ID = "USER_ID"
     }
 
     fun startAuthenticatedSession(token: String, user: User) {
@@ -30,6 +31,7 @@ class SessionManager(context: Context) {
             .putString(AUTH_TOKEN, token)
             .putString(USER_EMAIL, user.email)
             .putString(USER_FULL_NAME, user.fullName)
+            .putString(USER_ID, user.id)
             .apply()
     }
 
@@ -51,5 +53,9 @@ class SessionManager(context: Context) {
 
     fun getUserFullName(): String? {
         return sharedPreferences.getString(USER_FULL_NAME, null)
+    }
+
+    fun getUserId(): String? {
+        return sharedPreferences.getString(USER_ID, null)
     }
 }

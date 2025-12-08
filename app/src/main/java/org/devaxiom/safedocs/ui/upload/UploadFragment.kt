@@ -64,11 +64,16 @@ class UploadFragment : Fragment() {
 
         setupListeners()
         observeViewModel()
+        
+        if (!sessionManager.isGuest()) {
+            viewModel.fetchFamilies()
+        }
     }
 
     private fun setupListeners() {
         binding.rgVisibility.setOnCheckedChangeListener { _, checkedId ->
-            binding.tilShareWith.isVisible = (checkedId == binding.rbShared.id)
+            binding.tilShareWith.isVisible = (checkedId == org.devaxiom.safedocs.R.id.rbShared)
+            binding.spinnerFamily.isVisible = (checkedId == org.devaxiom.safedocs.R.id.rbFamily)
         }
 
         binding.btnSelectFile.setOnClickListener {
@@ -81,6 +86,18 @@ class UploadFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.families.observe(viewLifecycleOwner) { families ->
+            val adapter = android.widget.ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                families.map { it.familyName }
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerFamily.adapter = adapter
+            // Tagging the binding to store data or keeping reference is tricky with anonymous classes
+            // Better to store in a map or reference via position index matching list index
+        }
+        
         viewModel.uploadState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UploadState.Loading -> {
@@ -105,7 +122,6 @@ class UploadFragment : Fragment() {
                 is UploadState.RequireAuth -> {
                     binding.progressBar.isVisible = false
                     binding.btnUpload.isEnabled = true
-                    // Show a reusable bottom sheet to prompt sign-in
                     LoginBottomSheetFragment.newInstance(message = state.message)
                         .show(parentFragmentManager, "LoginBottomSheet")
                 }
@@ -116,10 +132,29 @@ class UploadFragment : Fragment() {
     private fun handleUpload() {
         val title = binding.etTitle.text.toString().trim()
         val category = binding.etCategory.text.toString().trim()
-        val selectedRadioButton =
-            view?.findViewById<RadioButton>(binding.rgVisibility.checkedRadioButtonId)
-        val visibility = selectedRadioButton?.text.toString().uppercase()
-        val shareWith = binding.etShareWith.text.toString().trim().takeIf { it.isNotEmpty() }
+        
+        val visibility = when(binding.rgVisibility.checkedRadioButtonId) {
+            org.devaxiom.safedocs.R.id.rbFamily -> "FAMILY"
+            org.devaxiom.safedocs.R.id.rbShared -> "SHARED"
+            else -> "PERSONAL" 
+        }
+
+        val shareWith = if (visibility == "SHARED") {
+            binding.etShareWith.text.toString().trim().takeIf { it.isNotEmpty() }
+        } else null
+        
+        var familyId: String? = null
+        if (visibility == "FAMILY") {
+            val families = viewModel.families.value
+            val position = binding.spinnerFamily.selectedItemPosition
+            if (families != null && position >= 0 && position < families.size) {
+                familyId = families[position].id
+            }
+            if (familyId == null) {
+                 Toast.makeText(context, "Please select a family", Toast.LENGTH_SHORT).show()
+                 return
+            }
+        }
 
         if (title.isEmpty() || selectedFileUri == null) {
             Toast.makeText(context, "Title and file are required", Toast.LENGTH_SHORT).show()
@@ -127,7 +162,7 @@ class UploadFragment : Fragment() {
         }
 
         selectedFileUri?.let {
-            viewModel.uploadDocument(title, category, visibility, shareWith, it)
+            viewModel.uploadDocument(title, category, visibility, shareWith, familyId, it)
         }
     }
 

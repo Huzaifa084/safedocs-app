@@ -40,7 +40,20 @@
     <fragment
         android:id="@+id/familyFragment"
         android:name="org.devaxiom.safedocs.ui.FamilyFragment"
-        android:label="Family" />
+        android:label="Family">
+        <action
+            android:id="@+id/action_family_to_profile"
+            app:destination="@id/familyProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/familyProfileFragment"
+        android:name="org.devaxiom.safedocs.ui.family.FamilyProfileFragment"
+        android:label="Family Profile">
+        <argument
+            android:name="familyId"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"

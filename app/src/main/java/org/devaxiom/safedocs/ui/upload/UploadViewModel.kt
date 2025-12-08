@@ -18,11 +18,29 @@ class UploadViewModel(application: Application) : AndroidViewModel(application) 
     private val _uploadState = MutableLiveData<UploadState>()
     val uploadState: LiveData<UploadState> = _uploadState
 
+    private val familyRepository = org.devaxiom.safedocs.data.FamilyRepository()
+    private val _families = androidx.lifecycle.MutableLiveData<List<org.devaxiom.safedocs.data.model.FamilySummary>>()
+    val families: androidx.lifecycle.LiveData<List<org.devaxiom.safedocs.data.model.FamilySummary>> = _families
+
+    fun fetchFamilies() {
+        viewModelScope.launch {
+            try {
+                val response = familyRepository.getFamilies()
+                if (response.isSuccessful && response.body()?.success == true) {
+                    _families.postValue(response.body()?.data ?: emptyList())
+                }
+            } catch (e: Exception) {
+                // minor error, maybe empty list
+            }
+        }
+    }
+
     fun uploadDocument(
         title: String,
         category: String,
         visibility: String,
         shareWith: String?,
+        familyId: String?,
         fileUri: Uri
     ) {
         // Gate protected action: require authentication
@@ -33,7 +51,7 @@ class UploadViewModel(application: Application) : AndroidViewModel(application) 
         _uploadState.value = UploadState.Loading
         viewModelScope.launch {
             try {
-                val response = documentRepository.uploadDocument(title, category, visibility, shareWith, fileUri)
+                val response = documentRepository.uploadDocument(title, category, visibility, shareWith, familyId, fileUri)
                 if (response.isSuccessful && response.body()?.success == true) {
                     _uploadState.postValue(UploadState.Success)
                 } else {

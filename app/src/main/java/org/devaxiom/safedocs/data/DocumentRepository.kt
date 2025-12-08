@@ -18,8 +18,9 @@ class DocumentRepository(private val context: Context) {
         search: String? = null,
         category: String? = null,
         expiryFrom: String? = null,
-        expiryTo: String? = null
-    ) = ApiClient.instance.getDocuments(type, search, category, expiryFrom, expiryTo)
+        expiryTo: String? = null,
+        familyId: String? = null
+    ) = ApiClient.instance.getDocuments(type, search, category, expiryFrom, expiryTo, familyId)
 
     suspend fun getSharedWithMeDocuments() = ApiClient.instance.getSharedWithMeDocuments()
 
@@ -51,12 +52,14 @@ class DocumentRepository(private val context: Context) {
         category: String,
         visibility: String,
         shareWith: String?,
+        familyId: String? = null,
         fileUri: Uri
     ) = ApiClient.instance.uploadDocument(
         title = title,
         category = category,
         visibility = visibility,
         shareWith = shareWith,
+        familyId = familyId,
         file = prepareFilePart(fileUri)
     )
 

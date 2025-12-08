@@ -15,3 +15,8 @@
 local.properties
 /app/docs/example.txt
 /**.log
+build_log.txt
+signing_report.txt
+.kotlin/errors/errors-1765112155918.log
+.kotlin/sessions/kotlin-compiler-16812729239450051879.salive
+app/release.keystore
